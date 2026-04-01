@@ -1,0 +1,13 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Solid White Background (optional, or transparent) -->
+  <rect width="256" height="256" rx="64" fill="white"/>
+  
+  <!-- Red SANY Rotor Marks -->
+  <g transform="translate(128, 128) scale(4.4)">
+    <circle cx="0" cy="0" r="22" stroke="#e3000f" stroke-width="4.5" />
+    <path d="M0 -19 L-5 1 L5 1 Z" fill="#e3000f" />
+    <path d="M-17 13 L-5 -3 L2 -5 Z" fill="#e3000f" />
+    <path d="M17 13 L5 -3 L-2 -5 Z" fill="#e3000f" />
+    <circle cx="0" cy="-2" r="3" fill="white" />
+  </g>
+</svg>
