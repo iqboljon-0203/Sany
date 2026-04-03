@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { projects } from '@/data/projects';
 import { useTranslation } from '@/lib/i18n';
 
@@ -45,9 +45,9 @@ export default function ProjectsSection() {
               className="group relative rounded-xl overflow-hidden bg-anthracite h-[380px] card-hover cursor-pointer"
             >
               {/* Background Image Layer */}
-              <Image 
+              <NextImage 
                 src={project.image}
-                alt={project.title}
+                alt={`${project.title} - major infrastructure project in Uzbekistan with SANY equipment`}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"

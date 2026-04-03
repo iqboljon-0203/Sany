@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { useTranslation } from '@/lib/i18n';
 
 export default function HeroSection() {
@@ -11,9 +11,9 @@ export default function HeroSection() {
     <section id="hero" className="relative min-h-screen flex items-center pt-32 lg:pt-40 pb-32 overflow-hidden bg-anthracite">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
-        <Image
+        <NextImage
           src="/images/products/excavator_site.png"
-          alt="SANY Excavator on construction site"
+          alt="SANY heavy excavator machine working on a large construction site in Uzbekistan"
           fill
           priority
           className="object-cover object-center bg-[#1A1A1A]"

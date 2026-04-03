@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { getFeaturedProducts, formatPrice } from '@/data/products';
 
 export default function FeaturedProducts() {
@@ -65,9 +65,9 @@ export default function FeaturedProducts() {
                 <div className="bg-card-bg rounded-xl overflow-hidden card-hover shadow-sm border border-border-color">
                   {/* Image Area */}
                   <div className="relative h-52 bg-anthracite-light overflow-hidden">
-                    <Image 
+                    <NextImage 
                       src={product.images[0] || '/images/products/excavator.png'}
-                      alt={product.name}
+                      alt={`SANY ${product.name} ${product.categoryLabel} - official distributor in Uzbekistan`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"

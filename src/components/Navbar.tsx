@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { navLinks, phoneNumbers } from '@/data/projects';
 import ThemeToggle from './ThemeToggle';
@@ -9,6 +10,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation } from '@/lib/i18n';
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { t } = useTranslation();
@@ -102,14 +104,37 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Links */}
-            <div className="hidden lg:flex items-center gap-4 xl:gap-6">
-              <Link href="/products" className="relative px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group">{t.nav.products}<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-sany-red transition-all duration-300 group-hover:w-3/4" /></Link>
-              <Link href="/solutions" className="relative px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group">{t.nav.solutions}<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-sany-red transition-all duration-300 group-hover:w-3/4" /></Link>
-              <Link href="/projects" className="relative px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group">{t.nav.projects}<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-sany-red transition-all duration-300 group-hover:w-3/4" /></Link>
-              <Link href="/service" className="relative px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group">{t.nav.service}<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-sany-red transition-all duration-300 group-hover:w-3/4" /></Link>
-              <Link href="/about" className="relative px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group">{t.nav.about}<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-sany-red transition-all duration-300 group-hover:w-3/4" /></Link>
-              <Link href="/leasing" className="relative px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group">{t.nav.leasing}<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-sany-red transition-all duration-300 group-hover:w-3/4" /></Link>
-              <Link href="/contacts" className="relative px-4 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group">{t.nav.contacts}<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-sany-red transition-all duration-300 group-hover:w-3/4" /></Link>
+            <div className="hidden lg:flex items-center gap-1 xl:gap-2">
+              {[
+                { href: '/products', label: t.nav.products },
+                { href: '/solutions', label: t.nav.solutions },
+                { href: '/projects', label: t.nav.projects },
+                { href: '/service', label: t.nav.service },
+                { href: '/about', label: t.nav.about },
+                { href: '/leasing', label: t.nav.leasing },
+                { href: '/contacts', label: t.nav.contacts }
+              ].map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link 
+                    key={link.href}
+                    href={link.href} 
+                    className={`relative px-4 py-2 text-[13px] font-semibold transition-all duration-300 rounded-lg ${
+                      isActive 
+                        ? 'text-sany-red bg-sany-red/5' 
+                        : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
+                    }`}
+                  >
+                    {link.label}
+                    {isActive && (
+                      <motion.span 
+                        layoutId="active-nav"
+                        className="absolute bottom-1 left-4 right-4 h-0.5 bg-sany-red rounded-full"
+                      />
+                    )}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* CTA & Mobile Toggle */}
@@ -165,13 +190,29 @@ export default function Navbar() {
               transition={{ delay: 0.1 }}
               className="flex flex-col justify-center items-center h-full gap-2 pt-20"
             >
-              <Link href="/products" onClick={() => setIsMobileOpen(false)} className="text-2xl font-heading font-bold text-foreground/80 hover:text-sany-red transition-colors py-3 block">{t.nav.products}</Link>
-              <Link href="/solutions" onClick={() => setIsMobileOpen(false)} className="text-2xl font-heading font-bold text-foreground/80 hover:text-sany-red transition-colors py-3 block">{t.nav.solutions}</Link>
-              <Link href="/projects" onClick={() => setIsMobileOpen(false)} className="text-2xl font-heading font-bold text-foreground/80 hover:text-sany-red transition-colors py-3 block">{t.nav.projects}</Link>
-              <Link href="/service" onClick={() => setIsMobileOpen(false)} className="text-2xl font-heading font-bold text-foreground/80 hover:text-sany-red transition-colors py-3 block">{t.nav.service}</Link>
-              <Link href="/about" onClick={() => setIsMobileOpen(false)} className="text-2xl font-heading font-bold text-foreground/80 hover:text-sany-red transition-colors py-3 block">{t.nav.about}</Link>
-              <Link href="/leasing" onClick={() => setIsMobileOpen(false)} className="text-2xl font-heading font-bold text-foreground/80 hover:text-sany-red transition-colors py-3 block">{t.nav.leasing}</Link>
-              <Link href="/contacts" onClick={() => setIsMobileOpen(false)} className="text-2xl font-heading font-bold text-foreground/80 hover:text-sany-red transition-colors py-3 block">{t.nav.contacts}</Link>
+              {[
+                { href: '/products', label: t.nav.products },
+                { href: '/solutions', label: t.nav.solutions },
+                { href: '/projects', label: t.nav.projects },
+                { href: '/service', label: t.nav.service },
+                { href: '/about', label: t.nav.about },
+                { href: '/leasing', label: t.nav.leasing },
+                { href: '/contacts', label: t.nav.contacts }
+              ].map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link 
+                    key={link.href}
+                    href={link.href} 
+                    onClick={() => setIsMobileOpen(false)} 
+                    className={`text-2xl font-heading font-bold py-3 block transition-colors ${
+                      isActive ? 'text-sany-red' : 'text-foreground/80 hover:text-sany-red'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
 
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
