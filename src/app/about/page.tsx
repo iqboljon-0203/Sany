@@ -1,21 +1,19 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useTranslation } from '@/lib/i18n';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
-  title: 'О компании SANY Uzbekistan',
-  description: 'SANY — официальный представитель в Узбекистане и Центральной Азии. Узнайте о нашей истории, миссии и ценностях.',
-};
-
 export default function AboutPage() {
+  const { t } = useTranslation();
   return (
     <div className="pt-[82px]">
       {/* Hero */}
-      <section className="bg-anthracite py-20 relative overflow-hidden">
+      <section className="bg-background py-20 relative overflow-hidden border-b border-border-color">
         <div className="absolute inset-0 opacity-[0.03]">
           <svg width="100%" height="100%">
             <defs>
               <pattern id="about-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeOpacity="0.05" strokeWidth="0.5" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#about-grid)" />
@@ -23,15 +21,13 @@ export default function AboutPage() {
         </div>
         <div className="container-custom relative z-10">
           <span className="text-sany-red text-sm font-bold uppercase tracking-widest mb-3 block">
-            О нас
+            {t.about.subtitle}
           </span>
-          <h1 className="text-4xl lg:text-6xl font-heading font-bold text-white mb-4">
+          <h1 className="text-4xl lg:text-6xl font-heading font-bold text-foreground mb-4">
             Quality Changes <span className="gradient-text-red">the World</span>
           </h1>
-          <p className="text-white/40 max-w-2xl text-lg">
-            Компания ИП ООО «SANY AUTOMOBILE MANUFACTURING CENTRAL ASIA» является официальным представительством заводов производителей техники «SANY GROUP» (Китай) на территории Республики Узбекистан и Центральной Азии.
-            <br /><br />
-            Компания «SANY GROUP» является крупнейшим в Китае и четвёртым по величине в мире производителем тяжёлой строительной техники (занимает первое место в мире по производству экскаваторов, бетономешалок и кранов).
+          <p className="text-text-muted max-w-2xl text-lg">
+            {t.about.description}
           </p>
         </div>
       </section>
@@ -40,12 +36,7 @@ export default function AboutPage() {
       <section className="bg-sany-red py-16">
         <div className="container-custom">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { value: '1989', label: 'Год основания SANY' },
-              { value: '150+', label: 'Стран присутствия' },
-              { value: '100 000+', label: 'Сотрудников по миру' },
-              { value: 'ТОП-5', label: 'В мировом рейтинге' },
-            ].map((stat, i) => (
+            {t.about.stats.map((stat: any, i: number) => (
               <div key={i}>
                 <div className="text-3xl md:text-4xl font-heading font-bold text-white mb-1">{stat.value}</div>
                 <div className="text-white/70 text-sm">{stat.label}</div>
@@ -61,10 +52,10 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="text-sany-red text-sm font-bold uppercase tracking-widest mb-3 block">
-                Наша миссия
+                {t.about.mission}
               </span>
-              <h2 className="text-4xl font-heading font-bold text-anthracite mb-6">
-                Строим будущее Узбекистана вместе
+              <h2 className="text-4xl font-heading font-bold text-foreground mb-6">
+                {t.about.mission}
               </h2>
               <p className="text-text-muted leading-relaxed mb-6">
                 Техника «SANY» на территории Республики Узбекистан участвует в строительстве важных государственных объектов таких как: строительство Медно-Обогатительной Фабрики <strong>(МОФ-3) в г. Алмалыке</strong>; На карьере <strong>«Мурунтау»</strong> при добыче золота; <strong>Байсунский газоперерабатывающий завод</strong>; Завод по производству сжиженного газа <strong>«Uzbekistan GTL»</strong> в Кашкадарьинской области; <strong>Надземное метро</strong> в г. Ташкенте; <strong>Ташкент-Сити</strong>; <strong>Самарканд-Сити</strong>; Строительство гидроэлектростанций, водных и дорожных объектов по всей республике и многих других.
@@ -83,9 +74,9 @@ export default function AboutPage() {
                 { title: 'Сервис', desc: '24/7 техническая поддержка', icon: '🔧' },
                 { title: 'Запчасти', desc: 'Склад в Ташкенте', icon: '⚙️' },
               ].map((item, i) => (
-                <div key={i} className="bg-white rounded-xl p-6 shadow-sm card-hover">
+                <div key={i} className="bg-card-bg rounded-xl p-6 shadow-sm card-hover border border-border-color">
                   <div className="text-3xl mb-3">{item.icon}</div>
-                  <h3 className="font-heading font-bold text-anthracite mb-1">{item.title}</h3>
+                  <h3 className="font-heading font-bold text-foreground mb-1">{item.title}</h3>
                   <p className="text-text-muted text-sm">{item.desc}</p>
                 </div>
               ))}

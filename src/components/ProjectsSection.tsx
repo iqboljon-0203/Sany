@@ -1,11 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { projects } from '@/data/projects';
+import { useTranslation } from '@/lib/i18n';
 
 export default function ProjectsSection() {
+  const { t } = useTranslation();
   return (
-    <section id="projects" className="section-padding bg-white relative">
+    <section id="projects" className="section-padding bg-background relative">
       <div className="container-custom">
         {/* Section Header */}
         <div className="text-center mb-14">
@@ -15,18 +18,18 @@ export default function ProjectsSection() {
             viewport={{ once: true }}
             className="text-sany-red text-sm font-bold uppercase tracking-widest mb-3 block"
           >
-            География проектов
+            {t.nav.projects}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl lg:text-5xl font-heading font-bold text-anthracite mb-4"
+            className="text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4"
           >
-            Проекты в <span className="gradient-text-red">Узбекистане</span>
+            {t.nav.projects} <span className="gradient-text-red">Uzbekistan</span>
           </motion.h2>
           <p className="text-text-muted max-w-xl mx-auto">
-            Техника SANY задействована на крупнейших строительных и горнодобывающих объектах страны
+            {t.about.missionText}
           </p>
         </div>
 
@@ -42,9 +45,12 @@ export default function ProjectsSection() {
               className="group relative rounded-xl overflow-hidden bg-anthracite h-[380px] card-hover cursor-pointer"
             >
               {/* Background Image Layer */}
-              <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" 
-                style={{ backgroundImage: `url('/images/projects/project_site.png')` }}
+              <Image 
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
 
               {/* Background Gradient Overlays */}

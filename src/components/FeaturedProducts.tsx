@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getFeaturedProducts, formatPrice } from '@/data/products';
 
 export default function FeaturedProducts() {
@@ -61,14 +62,17 @@ export default function FeaturedProducts() {
               transition={{ delay: i * 0.1 }}
             >
               <Link href={`/products/${product.slug}`} className="block group">
-                <div className="bg-white rounded-xl overflow-hidden card-hover shadow-sm">
+                <div className="bg-card-bg rounded-xl overflow-hidden card-hover shadow-sm border border-border-color">
                   {/* Image Area */}
                   <div className="relative h-52 bg-anthracite-light overflow-hidden">
-                    <div 
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                      style={{ backgroundImage: `url(${product.images[0] || '/images/products/excavator.png'})` }}
+                    <Image 
+                      src={product.images[0] || '/images/products/excavator.png'}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-anthracite-light/50 to-transparent mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-anthracite-light/20 to-transparent mix-blend-overlay opacity-60" />
                     {/* Category Badge */}
                     <div className="absolute top-3 left-3">
                       <span className="px-3 py-1 bg-anthracite/80 backdrop-blur text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
@@ -91,7 +95,7 @@ export default function FeaturedProducts() {
 
                   {/* Content */}
                   <div className="p-5">
-                    <h3 className="font-heading font-bold text-lg text-anthracite group-hover:text-sany-red transition-colors">
+                    <h3 className="font-heading font-bold text-lg text-foreground group-hover:text-sany-red transition-colors">
                       {product.name}
                     </h3>
                     <p className="text-text-muted text-sm mt-1 line-clamp-2">{product.shortDescription}</p>

@@ -5,11 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { products, categoryLabels } from '@/data/products';
 import type { ProductCategory } from '@/types';
+import { useTranslation } from '@/lib/i18n';
 
 export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'weight' | 'power'>('name');
+  const { t } = useTranslation();
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
@@ -51,12 +53,12 @@ export default function ProductsPage() {
   return (
     <div className="pt-[82px] min-h-screen bg-light-grey">
       {/* Page Header */}
-      <div className="bg-anthracite py-16 relative overflow-hidden">
+      <div className="bg-background py-16 relative overflow-hidden border-b border-border-color">
         <div className="absolute inset-0 opacity-[0.03]">
           <svg width="100%" height="100%">
             <defs>
               <pattern id="catalog-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeOpacity="0.05" strokeWidth="0.5" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#catalog-grid)" />
@@ -68,12 +70,12 @@ export default function ProductsPage() {
             animate={{ opacity: 1, y: 0 }}
           >
             <span className="text-sany-red text-sm font-bold uppercase tracking-widest mb-3 block">
-              Каталог
+              {t.products.catalog}
             </span>
-            <h1 className="text-4xl lg:text-5xl font-heading font-bold text-white mb-4">
+            <h1 className="text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4">
               Промышленный <span className="gradient-text-red">каталог</span>
             </h1>
-            <p className="text-white/40 max-w-xl">
+            <p className="text-text-muted max-w-xl">
               Полный ассортимент строительной, горнодобывающей и дорожной техники SANY
             </p>
           </motion.div>
@@ -88,16 +90,16 @@ export default function ProductsPage() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:w-72 shrink-0"
           >
-            <div className="bg-white rounded-xl shadow-sm p-6 sticky top-[100px]">
+            <div className="bg-card-bg rounded-xl shadow-sm p-6 sticky top-[100px] border border-border-color">
               {/* Search */}
               <div className="mb-6">
-                <label className="text-anthracite font-heading font-bold text-sm mb-3 block">
-                  Поиск
+                <label className="text-foreground font-heading font-bold text-sm mb-3 block">
+                  {t.contacts.formTitle}
                 </label>
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Модель или тип..."
+                    placeholder={t.products.searchPlaceholder}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="form-input-light !pr-10 !text-sm"
@@ -120,7 +122,7 @@ export default function ProductsPage() {
 
               {/* Categories */}
               <div className="mb-6">
-                <label className="text-anthracite font-heading font-bold text-sm mb-3 block">
+                <label className="text-foreground font-heading font-bold text-sm mb-3 block">
                   Категория
                 </label>
                 <div className="space-y-1">
@@ -129,7 +131,7 @@ export default function ProductsPage() {
                     className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       selectedCategory === 'all'
                         ? 'bg-sany-red text-white'
-                        : 'text-anthracite/70 hover:bg-light-grey'
+                        : 'text-foreground/70 hover:bg-light-grey'
                     }`}
                   >
                     Все категории
@@ -151,7 +153,7 @@ export default function ProductsPage() {
                         className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                           selectedCategory === key
                             ? 'bg-sany-red text-white'
-                            : 'text-anthracite/70 hover:bg-light-grey'
+                            : 'text-foreground/70 hover:bg-light-grey'
                         }`}
                       >
                         {label}
@@ -166,7 +168,7 @@ export default function ProductsPage() {
 
               {/* Sort */}
               <div>
-                <label className="text-anthracite font-heading font-bold text-sm mb-3 block">
+                <label className="text-foreground font-heading font-bold text-sm mb-3 block">
                   Сортировка
                 </label>
                 <select
@@ -188,7 +190,7 @@ export default function ProductsPage() {
           <div className="flex-1">
             <div className="flex items-center justify-between mb-6">
               <p className="text-text-muted text-sm">
-                Найдено: <span className="font-semibold text-anthracite">{filteredProducts.length}</span> моделей
+                Найдено: <span className="font-semibold text-foreground">{filteredProducts.length}</span> моделей
               </p>
             </div>
 
@@ -211,7 +213,7 @@ export default function ProductsPage() {
                       href={`/products/${product.slug}`}
                       className="block group"
                     >
-                      <div className="bg-white rounded-xl overflow-hidden card-hover shadow-sm">
+                      <div className="bg-card-bg rounded-xl overflow-hidden card-hover shadow-sm border border-border-color">
                         {/* Image Area */}
                         <div className="relative h-48 bg-gradient-to-br from-medium-grey/30 to-light-grey overflow-hidden">
                           <div className="absolute inset-0 flex items-center justify-center">
@@ -255,7 +257,7 @@ export default function ProductsPage() {
                         </div>
 
                         <div className="p-5">
-                          <h3 className="font-heading font-bold text-lg text-anthracite group-hover:text-sany-red transition-colors">
+                          <h3 className="font-heading font-bold text-lg text-foreground group-hover:text-sany-red transition-colors">
                             {product.name}
                           </h3>
                           <p className="text-text-muted text-sm mt-1 line-clamp-2">
@@ -292,7 +294,7 @@ export default function ProductsPage() {
             {filteredProducts.length === 0 && (
               <div className="text-center py-20">
                 <div className="text-6xl mb-4 opacity-20">🔍</div>
-                <h3 className="font-heading font-bold text-xl text-anthracite mb-2">
+                <h3 className="font-heading font-bold text-xl text-foreground mb-2">
                   Ничего не найдено
                 </h3>
                 <p className="text-text-muted text-sm">

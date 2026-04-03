@@ -1,18 +1,44 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #ffffff;
-  --color-foreground: #1A1A1A;
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
   --color-sany-red: #BE111A;
   --color-sany-red-dark: #9A0E15;
   --color-sany-red-light: #D4252E;
-  --color-anthracite: #1A1A1A;
-  --color-anthracite-light: #2A2A2A;
-  --color-light-grey: #F5F5F5;
-  --color-medium-grey: #E0E0E0;
-  --color-text-muted: #8A8A8A;
+  --color-anthracite: var(--anthracite);
+  --color-anthracite-light: var(--anthracite-light);
+  --color-light-grey: var(--light-grey);
+  --color-medium-grey: var(--medium-grey);
+  --color-text-muted: var(--text-muted);
+  --color-card-bg: var(--card-bg);
+  --color-border-color: var(--border-color);
   --font-heading: var(--font-montserrat);
   --font-body: var(--font-inter);
+}
+
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --anthracite: #1A1A1A;
+  --anthracite-light: #2A2A2A;
+  --light-grey: #F8F8F8;
+  --medium-grey: #E5E5E5;
+  --text-muted: #555555; /* Higher contrast for light mode */
+  --card-bg: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.08);
+}
+
+.dark {
+  --bg: #0A0A0A;
+  --fg: #F5F5F5;
+  --anthracite: #0F0F0F;
+  --anthracite-light: #161616;
+  --light-grey: #111111;
+  --medium-grey: #222222;
+  --text-muted: #B0B0B0; /* Higher contrast for dark mode */
+  --card-bg: #141414;
+  --border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Base Styles */
@@ -207,17 +233,17 @@ h1, h2, h3, h4, h5, h6 {
 .form-input-light {
   width: 100%;
   padding: 16px 20px;
-  background: #fdfdfd;
-  border: 1px solid var(--color-medium-grey);
+  background: var(--bg);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: var(--color-anthracite);
+  color: var(--fg);
   font-size: 1rem;
   transition: all 0.3s ease;
   outline: none;
 }
 
 .form-input-light:focus {
-  background: #ffffff;
+  background: var(--bg);
   border-color: var(--color-sany-red);
   box-shadow: 0 0 0 4px rgba(190, 17, 26, 0.15);
 }

@@ -23,7 +23,7 @@ export default function PartnersMarquee() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl lg:text-4xl font-heading font-bold text-anthracite"
+            className="text-3xl lg:text-4xl font-heading font-bold text-foreground"
           >
             Наши клиенты и партнёры
           </motion.h2>
@@ -42,9 +42,9 @@ export default function PartnersMarquee() {
               key={`${partner.id}-${i}`}
               className="flex-shrink-0 mx-6"
             >
-              <div className="w-56 h-auto min-h-[120px] py-5 bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-gray-100 flex items-center justify-center px-4 hover:shadow-[0_8px_30px_-4px_rgba(190,17,26,0.1)] hover:-translate-y-1 transition-all duration-400 group">
+              <div className="w-56 h-auto min-h-[120px] py-5 bg-card-bg rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-border-color flex items-center justify-center px-4 hover:shadow-[0_8px_30px_-4px_rgba(190,17,26,0.1)] hover:-translate-y-1 transition-all duration-400 group">
                 <div className="text-center w-full flex flex-col items-center">
-                  <div className="w-16 h-16 mx-auto mb-3 flex items-center justify-center relative bg-gray-50/80 rounded-xl group-hover:bg-white transition-colors">
+                  <div className="w-16 h-16 mx-auto mb-3 flex items-center justify-center relative bg-anthracite/5 rounded-xl group-hover:bg-card-bg transition-colors">
                     <img 
                       src={partner.logo}
                       alt={partner.name}
@@ -56,7 +56,7 @@ export default function PartnersMarquee() {
                       }}
                     />
                   </div>
-                  <p className="text-[13px] text-anthracite/80 font-bold leading-tight line-clamp-2 group-hover:text-sany-red transition-colors">
+                  <p className="text-[13px] text-foreground/80 font-bold leading-tight line-clamp-2 group-hover:text-sany-red transition-colors">
                     {partner.name}
                   </p>
                 </div>

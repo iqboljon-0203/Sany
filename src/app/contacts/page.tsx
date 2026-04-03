@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { phoneNumbers, companyInfo } from '@/data/projects';
 import type { FormStatus } from '@/types';
+import { useTranslation } from '@/lib/i18n';
 
 export default function ContactsPage() {
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [machineInterest, setMachineInterest] = useState('');
@@ -42,12 +44,12 @@ export default function ContactsPage() {
   return (
     <div className="pt-[82px]">
       {/* Hero */}
-      <section className="bg-anthracite py-20 relative overflow-hidden">
+      <section className="bg-background py-20 relative overflow-hidden border-b border-border-color">
         <div className="absolute inset-0 opacity-[0.03]">
           <svg width="100%" height="100%">
             <defs>
               <pattern id="contact-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeOpacity="0.05" strokeWidth="0.5" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#contact-grid)" />
@@ -55,13 +57,13 @@ export default function ContactsPage() {
         </div>
         <div className="container-custom relative z-10">
           <span className="text-sany-red text-sm font-bold uppercase tracking-widest mb-3 block">
-            Свяжитесь с нами
+            {t.contacts.subtitle}
           </span>
-          <h1 className="text-4xl lg:text-6xl font-heading font-bold text-white mb-4">
-            Контакты
+          <h1 className="text-4xl lg:text-6xl font-heading font-bold text-foreground mb-4">
+            {t.contacts.title}
           </h1>
-          <p className="text-white/40 max-w-xl text-lg">
-            Мы всегда на связи. Свяжитесь с нами любым удобным способом.
+          <p className="text-text-muted max-w-xl text-lg">
+            {t.contacts.description}
           </p>
         </div>
       </section>
@@ -75,7 +77,7 @@ export default function ContactsPage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              <h2 className="text-3xl font-heading font-bold text-anthracite mb-8 red-line">
+              <h2 className="text-3xl font-heading font-bold text-foreground mb-8 red-line">
                 Информация
               </h2>
 
@@ -88,7 +90,7 @@ export default function ContactsPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-anthracite mb-1">Адрес</h3>
+                  <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t.contacts.address}</h3>
                   <p className="text-text-muted">{companyInfo.address}</p>
                 </div>
               </div>
@@ -104,7 +106,7 @@ export default function ContactsPage() {
                     </div>
                     <div>
                       <p className="text-text-muted text-xs uppercase tracking-wider">{ph.label}</p>
-                      <a href={`tel:${ph.number}`} className="font-heading font-bold text-lg text-anthracite hover:text-sany-red transition-colors">
+                      <a href={`tel:${ph.number}`} className="font-heading font-bold text-lg text-foreground hover:text-sany-red transition-colors">
                         {ph.number}
                       </a>
                     </div>
@@ -120,7 +122,7 @@ export default function ContactsPage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-anthracite mb-1">Режим работы</h3>
+                  <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t.contacts.workingHours}</h3>
                   <p className="text-text-muted">{companyInfo.workingHours}</p>
                 </div>
               </div>
@@ -146,51 +148,51 @@ export default function ContactsPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <div className="bg-white rounded-2xl shadow-lg p-10">
-                <h2 className="text-2xl font-heading font-bold text-anthracite mb-6">
-                  Отправить заявку
+              <div className="bg-card-bg rounded-2xl shadow-lg p-10 border border-border-color">
+                <h2 className="text-2xl font-heading font-bold text-foreground mb-6">
+                  {t.contacts.formTitle}
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
-                    <label className="text-sm text-anthracite/70 font-medium mb-2 block">Имя *</label>
+                    <label className="text-sm text-foreground/70 font-medium mb-2 block">{t.leasing.name} *</label>
                     <input
                       type="text"
-                      placeholder="Ваше имя"
+                      placeholder={t.leasing.name}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-5 py-4 bg-[#fdfdfd] border border-gray-200 rounded-lg text-gray-800 text-base focus:bg-white focus:border-sany-red focus:ring-4 focus:ring-sany-red/15 transition-all outline-none"
+                      className="form-input-light"
                       required
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-anthracite/70 font-medium mb-2 block">Телефон *</label>
+                    <label className="text-sm text-foreground/70 font-medium mb-2 block">Телефон *</label>
                     <input
                       type="tel"
                       placeholder="+998 __ ___ __ __"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-5 py-4 bg-[#fdfdfd] border border-gray-200 rounded-lg text-gray-800 text-base focus:bg-white focus:border-sany-red focus:ring-4 focus:ring-sany-red/15 transition-all outline-none"
+                      className="form-input-light"
                       required
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-anthracite/70 font-medium mb-2 block">Интересующая техника</label>
+                    <label className="text-sm text-foreground/70 font-medium mb-2 block">Интересующая техника</label>
                     <input
                       type="text"
                       placeholder="Например: SY215C"
                       value={machineInterest}
                       onChange={(e) => setMachineInterest(e.target.value)}
-                      className="w-full px-5 py-4 bg-[#fdfdfd] border border-gray-200 rounded-lg text-gray-800 text-base focus:bg-white focus:border-sany-red focus:ring-4 focus:ring-sany-red/15 transition-all outline-none"
+                      className="form-input-light"
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-anthracite/70 font-medium mb-2 block">Сообщение</label>
+                    <label className="text-sm text-foreground/70 font-medium mb-2 block">Сообщение</label>
                     <textarea
                       placeholder="Ваше сообщение или вопрос..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       rows={4}
-                      className="w-full px-5 py-4 bg-[#fdfdfd] border border-gray-200 rounded-lg text-gray-800 text-base focus:bg-white focus:border-sany-red focus:ring-4 focus:ring-sany-red/15 transition-all outline-none resize-none"
+                      className="form-input-light resize-none"
                     />
                   </div>
                   <button
@@ -198,10 +200,10 @@ export default function ContactsPage() {
                     disabled={formStatus === 'loading'}
                     className="btn-primary w-full justify-center !py-4 disabled:opacity-50"
                   >
-                    {formStatus === 'loading' && 'Отправка...'}
-                    {formStatus === 'success' && '✓ Заявка отправлена!'}
-                    {formStatus === 'error' && 'Ошибка. Попробуйте ещё раз'}
-                    {formStatus === 'idle' && 'Отправить заявку'}
+                    {formStatus === 'loading' && '...'}
+                    {formStatus === 'success' && '✓'}
+                    {formStatus === 'error' && '!'}
+                    {formStatus === 'idle' && t.contacts.submit}
                   </button>
                 </form>
               </div>

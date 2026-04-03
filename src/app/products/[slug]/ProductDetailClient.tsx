@@ -158,13 +158,13 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
             {/* Main Content */}
             <div className="lg:col-span-2">
               {/* Tabs */}
-              <div className="flex gap-1 mb-8 bg-white p-1 rounded-xl shadow-sm w-fit">
+              <div className="flex gap-1 mb-8 bg-card-bg p-1 rounded-xl shadow-sm w-fit border border-border-color">
                 <button
                   onClick={() => setActiveTab('specs')}
                   className={`px-6 py-3 rounded-lg text-sm font-bold transition-all ${
                     activeTab === 'specs'
                       ? 'bg-sany-red text-white'
-                      : 'text-anthracite/60 hover:text-anthracite'
+                      : 'text-foreground/60 hover:text-foreground'
                   }`}
                 >
                   Характеристики
@@ -174,7 +174,7 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                   className={`px-6 py-3 rounded-lg text-sm font-bold transition-all ${
                     activeTab === 'description'
                       ? 'bg-sany-red text-white'
-                      : 'text-anthracite/60 hover:text-anthracite'
+                      : 'text-foreground/60 hover:text-foreground'
                   }`}
                 >
                   Описание
@@ -185,9 +185,9 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="bg-white rounded-xl shadow-sm p-8"
+                  className="bg-card-bg rounded-xl shadow-sm p-8 border border-border-color"
                 >
-                  <h2 className="font-heading font-bold text-2xl text-anthracite mb-6">
+                  <h2 className="font-heading font-bold text-2xl text-foreground mb-6">
                     Технические характеристики
                   </h2>
                   <div className="space-y-0">
@@ -199,7 +199,7 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                         }`}
                       >
                         <span className="text-text-muted">{spec.label}</span>
-                        <span className="font-heading font-bold text-anthracite text-lg">
+                        <span className="font-heading font-bold text-foreground text-lg">
                           {spec.value}{' '}
                           <span className="text-text-muted text-sm font-normal">{spec.unit}</span>
                         </span>
@@ -213,9 +213,9 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="bg-white rounded-xl shadow-sm p-8"
+                  className="bg-card-bg rounded-xl shadow-sm p-8 border border-border-color"
                 >
-                  <h2 className="font-heading font-bold text-2xl text-anthracite mb-6">
+                  <h2 className="font-heading font-bold text-2xl text-foreground mb-6">
                     Описание
                   </h2>
                   <p className="text-text-muted leading-relaxed text-lg">
@@ -276,13 +276,13 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
           {/* Related Products */}
           {related.length > 0 && (
             <div className="mt-20">
-              <h2 className="font-heading font-bold text-3xl text-anthracite mb-8">
+              <h2 className="font-heading font-bold text-3xl text-foreground mb-8">
                 Похожая техника
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {related.map((p) => (
                   <Link key={p.id} href={`/products/${p.slug}`} className="block group">
-                    <div className="bg-white rounded-xl overflow-hidden card-hover shadow-sm">
+                    <div className="bg-card-bg rounded-xl overflow-hidden card-hover shadow-sm border border-border-color">
                       <div className="h-40 bg-gradient-to-br from-medium-grey/30 to-light-grey flex items-center justify-center">
                         <span className="text-5xl opacity-20">
                           {p.category === 'excavator' && '🏗️'}
@@ -291,7 +291,7 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                         </span>
                       </div>
                       <div className="p-5">
-                        <h3 className="font-heading font-bold text-lg text-anthracite group-hover:text-sany-red transition-colors">
+                        <h3 className="font-heading font-bold text-lg text-foreground group-hover:text-sany-red transition-colors">
                           {p.name}
                         </h3>
                         <p className="text-text-muted text-sm mt-1">{p.shortDescription}</p>

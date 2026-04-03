@@ -2,17 +2,21 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useTranslation } from '@/lib/i18n';
 
 export default function HeroSection() {
+  const { t } = useTranslation();
   return (
     <section id="hero" className="relative min-h-screen flex items-center pt-32 lg:pt-40 pb-32 overflow-hidden bg-anthracite">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-[#1A1A1A]"
-          style={{
-            backgroundImage: `url('/images/products/excavator.png')`,
-          }}
+        <Image
+          src="/images/products/excavator_site.png"
+          alt="SANY Excavator on construction site"
+          fill
+          priority
+          className="object-cover object-center bg-[#1A1A1A]"
         />
         {/* Multi-layer overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/70 to-[#1A1A1A]/30" />
@@ -51,7 +55,7 @@ export default function HeroSection() {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 bg-sany-red/10 border border-sany-red/30 rounded-full text-sany-red text-xs font-semibold uppercase tracking-wider">
               <span className="w-2 h-2 bg-sany-red rounded-full animate-pulse" />
-              Официальный представитель в Узбекистане и Центральной Азии
+              {t.hero.subtitle}
             </span>
           </motion.div>
 
@@ -64,8 +68,8 @@ export default function HeroSection() {
           >
             <span className="block mb-2 text-white/90">SANY:</span>
             <span className="block">
-              <span className="gradient-text-red">Quality Changes</span>{' '}
-              <span className="text-white/90">the World</span>
+              <span className="gradient-text-red">{t.hero.titlePart1}</span>{' '}
+              <span className="text-white/90">{t.hero.titlePart2}</span>
             </span>
           </motion.h1>
 
@@ -76,8 +80,7 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-lg sm:text-xl text-white/50 max-w-xl mb-10 leading-relaxed"
           >
-            Полный спектр строительной, горнодобывающей и дорожной техники. 
-            Продажа, лизинг, сервис и запасные части с гарантией производителя.
+            {t.hero.description}
           </motion.p>
 
           {/* CTAs */}
@@ -88,7 +91,7 @@ export default function HeroSection() {
             className="flex flex-wrap gap-4"
           >
             <Link href="/products" className="btn-primary group">
-              <span>Каталог техники</span>
+              <span>{t.hero.catalog}</span>
               <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -97,7 +100,7 @@ export default function HeroSection() {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
               </svg>
-              <span>Лизинг калькулятор</span>
+              <span>{t.leasing.title}</span>
             </Link>
           </motion.div>
 
