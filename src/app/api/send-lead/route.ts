@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { createClient } from '@supabase/supabase-js';
 
 // Zod validation schema
 const leadSchema = z.object({
@@ -43,7 +44,7 @@ export async function POST(request: Request) {
 
     // Build Telegram message with HTML formatting
     let telegramMessage = `
-<b>🔴 Новая заявка — SANY Uzbekistan</b>
+<b>🔴 Новая заявка — sanyasia.uz</b>
 ━━━━━━━━━━━━━━━━━━
 
 <b>👤 Имя:</b> ${name}
@@ -94,6 +95,27 @@ export async function POST(request: Request) {
       }
     } else {
       console.log('Telegram not configured. Lead received:', { name, phone, machine });
+    }
+
+    // Save to Supabase (Admin Panel)
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (supabaseUrl && supabaseKey) {
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      
+      // We stringify leasingData or push it as part of the message if needed.
+      let dbMessage = message || '';
+      if (leasingData) {
+         dbMessage += `\nРасчет лизинга: Платёж ${formatNumber(leasingData.monthlyPayment)} сум/мес`;
+      }
+
+      await supabase.from('leads').insert({
+        name,
+        phone,
+        product: machine || null,
+        message: dbMessage,
+      });
     }
 
     return NextResponse.json({ success: true, message: 'Заявка успешно отправлена' });

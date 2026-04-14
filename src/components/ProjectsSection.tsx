@@ -2,11 +2,18 @@
 
 import { motion } from 'framer-motion';
 import NextImage from 'next/image';
-import { projects } from '@/data/projects';
 import { useTranslation } from '@/lib/i18n';
 
-export default function ProjectsSection() {
-  const { t } = useTranslation();
+export default function ProjectsSection({ projectsList = [] }: { projectsList?: any[] }) {
+  const { t, locale } = useTranslation();
+  
+  const getSafeSrc = (src: any) => {
+    if (!src || typeof src !== 'string') return '/images/sany-logo.svg';
+    const trimmed = src.trim();
+    if (trimmed.startsWith('/') || trimmed.startsWith('http')) return trimmed;
+    return '/images/sany-logo.svg';
+  };
+
   return (
     <section id="projects" className="section-padding bg-background relative">
       <div className="container-custom">
@@ -35,7 +42,7 @@ export default function ProjectsSection() {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, i) => (
+          {projectsList.map((project, i) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 30 }}
@@ -46,8 +53,8 @@ export default function ProjectsSection() {
             >
               {/* Background Image Layer */}
               <NextImage 
-                src={project.image}
-                alt={`${project.title} - major infrastructure project in Uzbekistan with SANY equipment`}
+                src={getSafeSrc(project.image)}
+                alt={`${locale === 'ru' ? (project.titleRu || project.title) : locale === 'uz' ? (project.titleUz || project.title) : (project.titleEn || project.title)} - major infrastructure project in Uzbekistan with SANY equipment`}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -59,29 +66,29 @@ export default function ProjectsSection() {
               {/* Content */}
               <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
                 <span className="inline-block px-3 py-1 bg-sany-red/20 border border-sany-red/30 text-sany-red text-xs font-semibold uppercase tracking-wider rounded-full mb-3">
-                  {project.category}
+                  {locale === 'ru' ? (project.categoryRu || project.category) : locale === 'uz' ? (project.categoryUz || project.category) : (project.categoryEn || project.category)}
                 </span>
                 <h3 className="font-heading font-bold text-xl text-white mb-2 group-hover:text-sany-red transition-colors">
-                  {project.title}
+                  {locale === 'ru' ? (project.titleRu || project.title) : locale === 'uz' ? (project.titleUz || project.title) : (project.titleEn || project.title)}
                 </h3>
                 <p className="text-white/50 text-sm mb-3 flex items-center gap-2">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  {project.location}
+                  {locale === 'ru' ? (project.locationRu || project.location) : locale === 'uz' ? (project.locationUz || project.location) : (project.locationEn || project.location)}
                 </p>
 
                 {/* Hidden description revealed on hover */}
                 <div className="max-h-0 overflow-hidden group-hover:max-h-24 transition-all duration-500">
                   <p className="text-white/40 text-xs leading-relaxed mb-3">
-                    {project.description}
+                    {locale === 'ru' ? (project.descriptionRu || project.description) : locale === 'uz' ? (project.descriptionUz || project.description) : (project.descriptionEn || project.description)}
                   </p>
                 </div>
 
                 {/* Machines Tags */}
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {project.machines.map((machine) => (
+                  {project.machines.map((machine: string) => (
                     <span key={machine} className="px-2 py-0.5 bg-white/5 text-white/50 text-[10px] rounded font-medium">
                       {machine}
                     </span>

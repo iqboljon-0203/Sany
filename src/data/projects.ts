@@ -66,7 +66,7 @@ export const partners: Partner[] = [
   { id: '6', name: 'Узбекнефтегаз', logo: 'https://www.google.com/s2/favicons?domain=ung.uz&sz=128' },
   { id: '7', name: 'UzGTL', logo: 'https://www.google.com/s2/favicons?domain=uzgtl.com&sz=128' },
   { id: '8', name: 'Узбекистон темир йуллари', logo: 'https://www.google.com/s2/favicons?domain=railway.uz&sz=128' },
-  { id: '9', name: 'Тошкент Метрополитени', logo: 'https://www.google.com/s2/favicons?domain=tashkentmetro.uz&sz=128' },
+  { id: '9', name: 'Тошкент Метрополитени', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Tashkent_Metro_logo.svg/200px-Tashkent_Metro_logo.svg.png' },
   { id: '10', name: 'UzAuto', logo: 'https://www.google.com/s2/favicons?domain=uzautomotors.com&sz=128' },
 ];
 

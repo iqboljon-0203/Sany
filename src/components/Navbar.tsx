@@ -9,12 +9,18 @@ import ThemeToggle from './ThemeToggle';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation } from '@/lib/i18n';
 
-export default function Navbar() {
+export default function Navbar({ settings }: { settings?: any }) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { t } = useTranslation();
 
+  const isRu = t.nav.solutions === 'Решения';
+  const s = settings || {};
+  const activePhones = [
+    { label: isRu ? 'Отдел продаж' : 'Sotuv bo\'limi', number: s.phone_sales || '+998 91 772 72 73' },
+    { label: isRu ? 'Cервис' : 'Servis', number: s.phone_service || '+998 93 555 00 95' }
+  ];
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -40,7 +46,7 @@ export default function Navbar() {
         <div className="bg-background/95 backdrop-blur-md border-b border-border-color h-full">
           <div className="container-custom h-full flex items-center justify-between">
             <div className="flex items-center gap-6">
-              {phoneNumbers.map((phone, i) => (
+              {activePhones.map((phone, i) => (
                 <a
                   key={i}
                   href={`tel:${phone.number}`}
@@ -55,7 +61,9 @@ export default function Navbar() {
               ))}
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-xs text-foreground/50">{t.contacts.workingHours}: 09:00 - 18:00</span>
+              <span className="text-xs text-foreground/50">
+                {t.contacts.workingHours}: {isRu ? s.working_hours_ru : s.working_hours_uz}
+              </span>
             </div>
           </div>
         </div>
@@ -139,7 +147,7 @@ export default function Navbar() {
 
             {/* CTA & Mobile Toggle */}
             <div className="flex items-center gap-4">
-              <div className="hidden sm:flex items-center gap-3">
+              <div className="hidden lg:flex items-center gap-3">
                 <ThemeToggle />
                 <LanguageSwitcher />
               </div>
@@ -163,12 +171,6 @@ export default function Navbar() {
                   className="w-6 h-0.5 bg-foreground rounded-full block"
                 />
               </button>
-              
-              {/* Mobile Language + Theme Toggle */}
-              <div className="lg:hidden flex items-center gap-2 ml-1">
-                <ThemeToggle />
-                <LanguageSwitcher />
-              </div>
             </div>
           </div>
         </div>
@@ -220,7 +222,7 @@ export default function Navbar() {
                 transition={{ delay: 0.5 }}
                 className="mt-8 flex flex-col items-center gap-4"
               >
-                {phoneNumbers.map((phone, i) => (
+                {activePhones.map((phone, i) => (
                   <a
                     key={i}
                     href={`tel:${phone.number}`}
@@ -229,6 +231,12 @@ export default function Navbar() {
                     {phone.label}: {phone.number}
                   </a>
                 ))}
+
+                <div className="flex items-center gap-4 mt-4 py-4 px-8 bg-card-bg rounded-2xl border border-border-color shadow-sm">
+                  <ThemeToggle />
+                  <div className="w-px h-6 bg-border-color" />
+                  <LanguageSwitcher />
+                </div>
               </motion.div>
             </motion.div>
           </motion.div>

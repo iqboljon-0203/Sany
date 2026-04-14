@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import StickyContactWidget from "@/components/StickyContactWidget";
+import AppShell from "@/components/AppShell";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/lib/i18n";
 
@@ -22,7 +20,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sany-asia.uz"),
+  metadataBase: new URL("https://sanyasia.uz"),
   alternates: {
     canonical: '/',
     languages: {
@@ -69,7 +67,7 @@ export const metadata: Metadata = {
     title: "SANY Uzbekistan — Quality Changes the World",
     description:
       "Официальный дистрибьютор строительной и горнодобывающей техники SANY. Полный каталог, сервис и запасные части в Узбекистане и Центральной Азии.",
-    url: "https://sany-asia.uz",
+    url: "https://sanyasia.uz",
     siteName: "SANY Uzbekistan",
     images: [
       {
@@ -95,11 +93,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+import { createClient } from "@/lib/supabase/server";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const { data: settings } = await supabase.from('settings').select('*').maybeSingle();
+
   return (
     <html
       lang="ru"
@@ -107,39 +110,48 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-XXXXXXXXXX');
+            `,
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "SANY Uzbekistan",
+              "alternateName": "SANY AUTOMOBILE MANUFACTURING CENTRAL ASIA",
+              "url": "https://sanyasia.uz",
+              "logo": "https://sanyasia.uz/favicon.svg",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": settings?.phone_sales || "+998-91-772-72-73",
+                "contactType": "sales",
+                "areaServed": "UZ",
+                "availableLanguage": ["Uzbek", "Russian", "English"]
+              },
+              "sameAs": [
+                settings?.telegram_url || "https://t.me/sany_uz"
+              ]
+            }),
+          }}
+        />
         <LanguageProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
           >
-            <Navbar />
-            <script
-              type="application/ld+json"
-              dangerouslySetInnerHTML={{
-                __html: JSON.stringify({
-                  "@context": "https://schema.org",
-                  "@type": "Organization",
-                  "name": "SANY Uzbekistan",
-                  "alternateName": "SANY AUTOMOBILE MANUFACTURING CENTRAL ASIA",
-                  "url": "https://sany-asia.uz",
-                  "logo": "https://sany-asia.uz/favicon.svg",
-                  "contactPoint": {
-                    "@type": "ContactPoint",
-                    "telephone": "+998-91-772-72-73",
-                    "contactType": "sales",
-                    "areaServed": "UZ",
-                    "availableLanguage": ["Uzbek", "Russian", "English"]
-                  },
-                  "sameAs": [
-                    "https://t.me/sany_uzbekistan"
-                  ]
-                }),
-              }}
-            />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <StickyContactWidget />
+            <AppShell settings={settings}>{children}</AppShell>
           </ThemeProvider>
         </LanguageProvider>
       </body>

@@ -5,14 +5,27 @@ import Link from 'next/link';
 import NextImage from 'next/image';
 import { useTranslation } from '@/lib/i18n';
 
-export default function HeroSection() {
-  const { t } = useTranslation();
+export default function HeroSection({ settings }: { settings?: any }) {
+  const { t, locale } = useTranslation();
+  
+  const getSafeSrc = (src: any) => {
+    if (!src || typeof src !== 'string') return '/images/products/excavator_site.png';
+    const trimmed = src.trim();
+    if (trimmed.startsWith('/') || trimmed.startsWith('http')) return trimmed;
+    return '/images/products/excavator_site.png';
+  };
+
+  // Dynamic titles/desc from DB
+  const dynamicTitle = locale === 'ru' ? settings?.hero_title_ru : settings?.hero_title_uz;
+  const dynamicDesc = locale === 'ru' ? settings?.hero_desc_ru : settings?.hero_desc_uz;
+  const dynamicImage = settings?.hero_image;
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center pt-32 lg:pt-40 pb-32 overflow-hidden bg-anthracite">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <NextImage
-          src="/images/products/excavator_site.png"
+          src={getSafeSrc(dynamicImage)}
           alt="SANY heavy excavator machine working on a large construction site in Uzbekistan"
           fill
           priority
@@ -68,8 +81,8 @@ export default function HeroSection() {
           >
             <span className="block mb-2 text-white/90">SANY:</span>
             <span className="block">
-              <span className="gradient-text-red">{t.hero.titlePart1}</span>{' '}
-              <span className="text-white/90">{t.hero.titlePart2}</span>
+              <span className="gradient-text-red">{dynamicTitle ? dynamicTitle.split(' ')[0] : t.hero.titlePart1}</span>{' '}
+              <span className="text-white/90">{dynamicTitle ? dynamicTitle.split(' ').slice(1).join(' ') : t.hero.titlePart2}</span>
             </span>
           </motion.h1>
 
@@ -80,7 +93,7 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-lg sm:text-xl text-white/50 max-w-xl mb-10 leading-relaxed"
           >
-            {t.hero.description}
+            {dynamicDesc || t.hero.description}
           </motion.p>
 
           {/* CTAs */}
@@ -119,7 +132,7 @@ export default function HeroSection() {
           transition={{ duration: 2, repeat: Infinity }}
           className="flex flex-col items-center gap-2"
         >
-          <span className="text-white/30 text-xs uppercase tracking-wider">Прокрутите вниз</span>
+          <span className="text-white/30 text-xs uppercase tracking-wider">{t.hero.scrollDown || 'Scroll Down'}</span>
           <svg className="w-5 h-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>

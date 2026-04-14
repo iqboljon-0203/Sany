@@ -23,6 +23,7 @@ export const products: Product[] = [
     images: ['/images/products/excavator_site.png'],
     thumbnail: '/images/products/excavator_site.png',
     featured: true,
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 850000000,
   },
   {
@@ -47,6 +48,7 @@ export const products: Product[] = [
     images: ['/images/products/quarry_excavator.png'],
     thumbnail: '/images/products/quarry_excavator.png',
     featured: true,
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 1580000000,
   },
   {
@@ -70,6 +72,7 @@ export const products: Product[] = [
     images: ['/images/products/crane_turbine.png'],
     thumbnail: '/images/products/crane_turbine.png',
     featured: true,
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 1200000000,
   },
   {
@@ -91,6 +94,7 @@ export const products: Product[] = [
     ],
     images: ['/images/products/crawler_crane_gigantic.png'],
     thumbnail: '/images/products/crawler_crane_gigantic.png',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 15000000000,
   },
   {
@@ -114,6 +118,7 @@ export const products: Product[] = [
     images: ['/images/products/loader_action.png'],
     thumbnail: '/images/products/loader_action.png',
     featured: true,
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 720000000,
   },
   {
@@ -135,6 +140,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1560931551-789f131da0c5?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1560931551-789f131da0c5?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 920000000,
   },
   {
@@ -155,6 +161,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1594921935898-0c6ca86e2467?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1594921935898-0c6ca86e2467?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 680000000,
   },
   {
@@ -175,6 +182,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 540000000,
   },
   {
@@ -195,6 +203,7 @@ export const products: Product[] = [
     ],
     images: ['/images/products/concrete_pump_city.png'],
     thumbnail: '/images/products/concrete_pump_city.png',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 450000000,
   },
   {
@@ -215,6 +224,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1558227691-41ea78d1f631?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1558227691-41ea78d1f631?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 2800000000,
   },
   {
@@ -235,6 +245,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 4500000000,
   },
   {
@@ -255,6 +266,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1549413248-c875d1d6a9ac?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1549413248-c875d1d6a9ac?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 1800000000,
   },
   {
@@ -275,6 +287,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 2100000000,
   },
   {
@@ -295,6 +308,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1549416551-7ba82c16183a?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1549416551-7ba82c16183a?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 3200000000,
   },
   {
@@ -316,6 +330,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1581455589814-2eaefb45283f?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1581455589814-2eaefb45283f?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 450000000,
   },
   {
@@ -338,6 +353,7 @@ export const products: Product[] = [
     images: ['/images/products/heavy_excavator_50t.png'],
     thumbnail: '/images/products/heavy_excavator_50t.png',
     featured: true,
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 2100000000,
   },
   {
@@ -358,6 +374,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1506811462002-3cabe37eebd5?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1506811462002-3cabe37eebd5?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 5500000000,
   },
   {
@@ -378,6 +395,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1519658055415-1811a0c441c0?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1519658055415-1811a0c441c0?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 850000000,
   },
   {
@@ -397,6 +415,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1549429188-7711200df837?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1549429188-7711200df837?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 1800000000,
   },
   {
@@ -416,6 +435,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 320000000,
   },
   {
@@ -435,6 +455,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 250000000,
   },
   {
@@ -454,6 +475,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1594921935898-0c6ca86e2467?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1594921935898-0c6ca86e2467?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 420000000,
   },
   {
@@ -472,6 +494,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1558227691-41ea78d1f631?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1558227691-41ea78d1f631?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 1800000000,
   },
   {
@@ -491,6 +514,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1594921935898-0c6ca86e2467?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1594921935898-0c6ca86e2467?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 950000000,
   },
   {
@@ -512,6 +536,7 @@ export const products: Product[] = [
     ],
     images: ['https://images.unsplash.com/photo-1621252179027-9ec4ab2fbecf?auto=format&fit=crop&w=1200&q=80'],
     thumbnail: 'https://images.unsplash.com/photo-1621252179027-9ec4ab2fbecf?auto=format&fit=crop&w=600&q=80',
+    pdfBrochure: '/brochures/sany_brochure.pdf',
     price: 180000000,
   }
 ];

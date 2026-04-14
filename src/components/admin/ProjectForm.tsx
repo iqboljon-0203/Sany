@@ -1,0 +1,175 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
+import { Save, X, Plus } from 'lucide-react';
+import Link from 'next/link';
+import ImageUpload from './ImageUpload';
+
+export default function ProjectForm({ initialData }: { initialData?: any }) {
+  const router = useRouter();
+  const supabase = createClient();
+  const [loading, setLoading] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    title_uz: initialData?.title_uz || '',
+    title_ru: initialData?.title_ru || initialData?.title || '',
+    title_en: initialData?.title_en || '',
+    location_uz: initialData?.location_uz || '',
+    location_ru: initialData?.location_ru || initialData?.location || '',
+    location_en: initialData?.location_en || '',
+    category_uz: initialData?.category_uz || '',
+    category_ru: initialData?.category_ru || initialData?.category || '',
+    category_en: initialData?.category_en || '',
+    image: initialData?.image || '',
+    description_uz: initialData?.description_uz || '',
+    description_ru: initialData?.description_ru || initialData?.description || '',
+    description_en: initialData?.description_en || '',
+  });
+
+  const [machines, setMachines] = useState<string[]>(initialData?.machines || ['']);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleMachineChange = (index: number, value: string) => {
+    const newMachines = [...machines];
+    newMachines[index] = value;
+    setMachines(newMachines);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const projectPayload = {
+      ...formData,
+      machines: machines.filter(m => m.trim() !== ''), // Remove empty machines
+    };
+
+    let errorResult;
+
+    if (initialData?.id) {
+      // Update
+      const { error } = await supabase.from('projects').update(projectPayload).eq('id', initialData.id);
+      errorResult = error;
+    } else {
+      // Insert
+      const { error } = await supabase.from('projects').insert([projectPayload]);
+      errorResult = error;
+    }
+
+    setLoading(false);
+
+    if (errorResult) {
+      alert('Ошибка: ' + errorResult.message);
+    } else {
+      router.push('/admin/projects');
+      router.refresh();
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Basic Information */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Информация о проекте</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 col-span-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Название проекта (UZ) *</label>
+              <input required type="text" name="title_uz" value={formData.title_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Узбекистон темир йулlari" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Название проекта (RU) *</label>
+              <input required type="text" name="title_ru" value={formData.title_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Узбекистон темир йуллари" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Project Title (EN) *</label>
+              <input required type="text" name="title_en" value={formData.title_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Uzbekistan Railways" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 col-span-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Локация (UZ) *</label>
+              <input required type="text" name="location_uz" value={formData.location_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Toshkent viloyati" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Локация (RU) *</label>
+              <input required type="text" name="location_ru" value={formData.location_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Ташкентская область" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Location (EN) *</label>
+              <input required type="text" name="location_en" value={formData.location_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Tashkent region" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 col-span-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Kategoriya (UZ)</label>
+              <input required type="text" name="category_uz" value={formData.category_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Категория (RU)</label>
+              <input required type="text" name="category_ru" value={formData.category_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Category (EN)</label>
+              <input required type="text" name="category_en" value={formData.category_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
+            </div>
+          </div>
+          <div className="md:col-span-2">
+            <ImageUpload
+              value={formData.image}
+              onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
+              folder="projects"
+              label="Обложка проекта (расм юкланг ёки URL киритинг)"
+            />
+          </div>
+          <div className="md:col-span-2 space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Описание (UZ)</label>
+              <textarea required rows={3} name="description_uz" value={formData.description_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Описание (RU)</label>
+              <textarea required rows={3} name="description_ru" value={formData.description_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Description (EN)</label>
+              <textarea required rows={3} name="description_en" value={formData.description_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Used Machines Tags */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Используемая техника SANY</h3>
+        <p className="text-sm text-gray-500 mb-4">Перечислите технику которая была задействована (эти тэги выводятся на карточке)</p>
+        <div className="space-y-3">
+          {machines.map((machine, i) => (
+            <div key={i} className="flex gap-4">
+              <input type="text" value={machine} onChange={(e) => handleMachineChange(i, e.target.value)} placeholder="Например: Экскаваторы SY215C (10 шт.)" className="flex-1 px-4 py-3 rounded-lg border border-gray-300 outline-none" />
+              <button type="button" onClick={() => setMachines(machines.filter((_, idx) => idx !== i))} className="p-3 bg-red-50 text-red-500 rounded-lg"><X className="w-5 h-5"/></button>
+            </div>
+          ))}
+          <button type="button" onClick={() => setMachines([...machines, ''])} className="flex items-center gap-2 text-sany-red font-bold p-2 hover:bg-red-50 rounded-lg transition-colors mt-2">
+            <Plus className="w-5 h-5" /> Добавить технику
+          </button>
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-4">
+        <Link href="/admin/projects" className="py-3 px-6 rounded-lg text-gray-600 bg-gray-100 hover:bg-gray-200 font-bold transition-colors">
+          Отмена
+        </Link>
+        <button type="submit" disabled={loading} className="flex items-center gap-2 bg-sany-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors disabled:opacity-50">
+          <Save className="w-5 h-5" /> {loading ? 'Сохранение...' : 'Сохранить проект'}
+        </button>
+      </div>
+    </form>
+  );
+}

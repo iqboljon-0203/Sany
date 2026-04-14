@@ -5,11 +5,16 @@ import { motion } from 'framer-motion';
 import type { FormStatus } from '@/types';
 import { useTranslation } from '@/lib/i18n';
 
-export default function LeasingCalculator() {
-  const [price, setPrice] = useState<number>(850000000);
-  const [downPaymentPercent, setDownPaymentPercent] = useState<number>(30);
-  const [leaseTerm, setLeaseTerm] = useState<number>(24);
-  const [interestRate] = useState<number>(22);
+export default function LeasingCalculator({ config }: { config?: any }) {
+  const annualRate = config?.annual_rate ?? 22;
+  const initPrice = 850000000;
+  const initDP = config?.min_prepayment ?? 30;
+  const initTerm = 24;
+
+  const [price, setPrice] = useState<number>(initPrice);
+  const [downPaymentPercent, setDownPaymentPercent] = useState<number>(initDP);
+  const [leaseTerm, setLeaseTerm] = useState<number>(initTerm);
+  const [interestRate] = useState<number>(annualRate);
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');

@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { Product } from '@/types';
 import { formatPrice } from '@/data/products';
 import type { FormStatus } from '@/types';
+import { useTranslation } from '@/lib/i18n';
+import NextImage from 'next/image';
 
 interface ProductDetailClientProps {
   product: Product;
@@ -13,11 +15,19 @@ interface ProductDetailClientProps {
 }
 
 export default function ProductDetailClient({ product, related }: ProductDetailClientProps) {
+  const { t, locale } = useTranslation();
   const [formStatus, setFormStatus] = useState<FormStatus>('idle');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
   const [activeTab, setActiveTab] = useState<'specs' | 'description'>('specs');
+
+  const getSafeSrc = (src: any) => {
+    if (!src || typeof src !== 'string') return '/images/sany-logo.svg';
+    const trimmed = src.trim();
+    if (trimmed.startsWith('/') || trimmed.startsWith('http')) return trimmed;
+    return '/images/sany-logo.svg';
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,9 +61,9 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
       <div className="bg-anthracite py-4">
         <div className="container-custom">
           <nav className="flex items-center gap-2 text-sm text-white/40">
-            <Link href="/" className="hover:text-white transition-colors">Главная</Link>
+            <Link href="/" className="hover:text-white transition-colors">{t.nav.home || 'Home'}</Link>
             <span>/</span>
-            <Link href="/products" className="hover:text-white transition-colors">Каталог</Link>
+            <Link href="/products" className="hover:text-white transition-colors">{t.nav.products}</Link>
             <span>/</span>
             <span className="text-white/70">{product.name}</span>
           </nav>
@@ -70,16 +80,13 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
               animate={{ opacity: 1, scale: 1 }}
               className="relative h-80 lg:h-[450px] bg-gradient-to-br from-anthracite-light to-anthracite rounded-2xl flex items-center justify-center overflow-hidden"
             >
-              <div className="text-[150px] opacity-20">
-                {product.category === 'excavator' && '🏗️'}
-                {product.category === 'crane' && '🏗️'}
-                {product.category === 'loader' && '🚜'}
-                {product.category === 'grader' && '🛤️'}
-                {product.category === 'roller' && '🛣️'}
-                {product.category === 'concrete' && '🏛️'}
-                {product.category === 'piling' && '⛏️'}
-                {product.category === 'mining' && '⛰️'}
-              </div>
+              <NextImage 
+                src={getSafeSrc(product.thumbnail || product.images?.[0])}
+                alt={product.name}
+                fill
+                priority
+                className="object-contain p-8"
+              />
               <div className="absolute top-4 left-4">
                 <span className="px-3 py-1.5 bg-sany-red text-white text-xs font-bold uppercase tracking-wider rounded-full">
                   {product.categoryLabel}
@@ -94,34 +101,34 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
               transition={{ delay: 0.2 }}
             >
               <span className="text-sany-red text-sm font-bold uppercase tracking-widest mb-2 block">
-                {product.categoryLabel}
+                {locale === 'ru' ? (product.categoryLabelRu || product.categoryLabel) : locale === 'uz' ? (product.categoryLabelUz || product.categoryLabel) : (product.categoryLabelEn || product.categoryLabel)}
               </span>
               <h1 className="text-5xl lg:text-6xl font-heading font-bold text-white mb-4">
                 {product.name}
               </h1>
               <p className="text-white/50 text-lg leading-relaxed mb-8">
-                {product.shortDescription}
+                {locale === 'ru' ? (product.shortDescriptionRu || product.shortDescription) : locale === 'uz' ? (product.shortDescriptionUz || product.shortDescription) : (product.shortDescriptionEn || product.shortDescription)}
               </p>
 
               {/* Key Specs */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                  <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Мощность</p>
+                  <p className="text-white/30 text-xs uppercase tracking-wider mb-1">{locale === 'ru' ? 'Мощность' : locale === 'uz' ? 'Quvvati' : 'Power'}</p>
                   <p className="text-white font-heading font-bold text-lg">{product.power}</p>
                 </div>
                 <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                  <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Масса</p>
+                  <p className="text-white/30 text-xs uppercase tracking-wider mb-1">{locale === 'ru' ? 'Масса' : locale === 'uz' ? 'Massasi' : 'Weight'}</p>
                   <p className="text-white font-heading font-bold text-lg">{product.operatingWeight}</p>
                 </div>
                 {product.bucketCapacity && (
                   <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                    <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Ковш</p>
+                    <p className="text-white/30 text-xs uppercase tracking-wider mb-1">{locale === 'ru' ? 'Ковш' : locale === 'uz' ? 'Kovsh' : 'Bucket'}</p>
                     <p className="text-white font-heading font-bold text-lg">{product.bucketCapacity}</p>
                   </div>
                 )}
                 {product.maxLiftCapacity && (
                   <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                    <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Грузоподъёмность</p>
+                    <p className="text-white/30 text-xs uppercase tracking-wider mb-1">{locale === 'ru' ? 'Грузоподъёмность' : locale === 'uz' ? 'Yuk ko\'tarish qobiliyati' : 'Lift Capacity'}</p>
                     <p className="text-white font-heading font-bold text-lg">{product.maxLiftCapacity}</p>
                   </div>
                 )}
@@ -130,7 +137,7 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
               {/* Price & Actions */}
               {product.price && (
                 <div className="mb-6">
-                  <p className="text-white/30 text-xs mb-1">Ориентировочная цена</p>
+                  <p className="text-white/30 text-xs mb-1">{locale === 'ru' ? 'Ориентировочная цена' : locale === 'uz' ? 'Taxminiy narxi' : 'Estimated price'}</p>
                   <p className="text-sany-red font-heading font-bold text-2xl">{formatPrice(product.price)}</p>
                 </div>
               )}
@@ -140,11 +147,19 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                   </svg>
-                  Рассчитать лизинг
+                  {t.leasing.title}
                 </Link>
                 <a href="#inquiry" className="btn-outline">
-                  Запрос цены
+                  {t.products.inquiryTitle}
                 </a>
+                {product.pdfBrochure && (
+                  <a href={product.pdfBrochure} target="_blank" rel="noopener noreferrer" className="btn-outline flex items-center gap-2 border-white/20 text-white hover:border-white">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    {locale === 'ru' ? 'PDF Брошюра' : locale === 'uz' ? 'PDF Broshyura' : 'PDF Brochure'}
+                  </a>
+                )}
               </div>
             </motion.div>
           </div>
@@ -167,7 +182,7 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                       : 'text-foreground/60 hover:text-foreground'
                   }`}
                 >
-                  Характеристики
+                  {t.products.specifications}
                 </button>
                 <button
                   onClick={() => setActiveTab('description')}
@@ -177,7 +192,7 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                       : 'text-foreground/60 hover:text-foreground'
                   }`}
                 >
-                  Описание
+                  {t.nav.about}
                 </button>
               </div>
 
@@ -188,7 +203,7 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                   className="bg-card-bg rounded-xl shadow-sm p-8 border border-border-color"
                 >
                   <h2 className="font-heading font-bold text-2xl text-foreground mb-6">
-                    Технические характеристики
+                    {t.products.specifications}
                   </h2>
                   <div className="space-y-0">
                     {product.specs.map((spec, i) => (
@@ -216,10 +231,10 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                   className="bg-card-bg rounded-xl shadow-sm p-8 border border-border-color"
                 >
                   <h2 className="font-heading font-bold text-2xl text-foreground mb-6">
-                    Описание
+                    {t.nav.about}
                   </h2>
-                  <p className="text-text-muted leading-relaxed text-lg">
-                    {product.description}
+                  <p className="text-text-muted leading-relaxed text-lg whitespace-pre-line">
+                    {locale === 'ru' ? (product.descriptionRu || product.description) : locale === 'uz' ? (product.descriptionUz || product.description) : (product.descriptionEn || product.description)}
                   </p>
                 </motion.div>
               )}
@@ -263,10 +278,10 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
                     disabled={formStatus === 'loading'}
                     className="btn-primary w-full justify-center disabled:opacity-50"
                   >
-                    {formStatus === 'loading' && 'Отправка...'}
-                    {formStatus === 'success' && '✓ Заявка отправлена!'}
-                    {formStatus === 'error' && 'Ошибка. Попробуйте ещё раз'}
-                    {formStatus === 'idle' && 'Отправить запрос'}
+                    {formStatus === 'loading' && '...'}
+                    {formStatus === 'success' && '✓'}
+                    {formStatus === 'error' && '!'}
+                    {formStatus === 'idle' && t.products.inquiryTitle}
                   </button>
                 </form>
               </div>

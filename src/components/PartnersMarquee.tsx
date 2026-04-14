@@ -1,11 +1,24 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { partners } from '@/data/projects';
+import { useTranslation } from '@/lib/i18n';
 
-export default function PartnersMarquee() {
+export default function PartnersMarquee({ partnersList = [] }: { partnersList?: any[] }) {
+  const { t } = useTranslation();
+  // If no DB partners loaded, fallback to these
+  const staticFallback = [
+    { id: 1, name: 'Enter Engineering', logo: '/images/partners/enter-engineering.svg' },
+    { id: 2, name: 'Трест 12', logo: '/images/partners/trest12.svg' },
+    { id: 3, name: 'Навоийский ГМК', logo: '/images/partners/ngmk.svg' },
+    { id: 4, name: 'Алмалыкский ГМК', logo: '/images/partners/agmk.svg' },
+    { id: 5, name: 'Узбекнефтегаз', logo: '/images/partners/uzneftegaz.svg' },
+    { id: 6, name: 'UzGTL', logo: '/images/partners/uzgtl.svg' }
+  ];
+
+  const displayPartners = partnersList.length > 0 ? partnersList : staticFallback;
+
   // Duplicate the array for seamless infinite scroll
-  const doubledPartners = [...partners, ...partners];
+  const doubledPartners = [...displayPartners, ...displayPartners];
 
   return (
     <section className="py-20 bg-light-grey overflow-hidden border-y border-medium-grey/50">
@@ -17,7 +30,7 @@ export default function PartnersMarquee() {
             viewport={{ once: true }}
             className="text-sany-red text-sm font-bold uppercase tracking-widest mb-3 block"
           >
-            Доверие и надёжность
+            {t.partners?.subtitle}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -25,7 +38,7 @@ export default function PartnersMarquee() {
             viewport={{ once: true }}
             className="text-3xl lg:text-4xl font-heading font-bold text-foreground"
           >
-            Наши клиенты и партнёры
+            {t.partners?.title}
           </motion.h2>
         </div>
       </div>

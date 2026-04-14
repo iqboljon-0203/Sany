@@ -2,43 +2,52 @@
 
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/lib/i18n';
+import { ShieldCheck, Wrench, Clock, Settings, Package, Star } from 'lucide-react';
 
-export default function WhySanySection() {
+const iconMap: Record<string, any> = {
+  ShieldCheck: <ShieldCheck className="w-8 h-8" strokeWidth={1.5} />,
+  Wrench: <Wrench className="w-8 h-8" strokeWidth={1.5} />,
+  Clock: <Clock className="w-8 h-8" strokeWidth={1.5} />,
+  Settings: <Settings className="w-8 h-8" strokeWidth={1.5} />,
+  Package: <Package className="w-8 h-8" strokeWidth={1.5} />,
+  Star: <Star className="w-8 h-8" strokeWidth={1.5} />
+};
+
+export default function WhySanySection({ advantagesList = [] }: { advantagesList?: any[] }) {
   const { t } = useTranslation();
 
-  const advantages = [
+  // Fallback items if DB is empty
+  const fallbackAdvantages = [
     {
       title: t.nav.solutions === 'Решения' ? 'Официальная гарантия' : t.nav.solutions === 'Yechimlar' ? 'Rasmiy kafolat' : 'Official Warranty',
       description: t.nav.solutions === 'Решения' ? 'Полная гарантия производителя на всю технику.' : t.nav.solutions === 'Yechimlar' ? 'Barcha texnikalar uchun ishlab chiqaruvchining to\'liq kafolati.' : 'Full manufacturer\'s warranty on all equipment.',
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
-      ),
+      icon: <ShieldCheck className="w-8 h-8" strokeWidth={1.5} />
     },
     {
       title: t.nav.solutions === 'Решения' ? 'Запчасти в Ташкенте' : t.nav.solutions === 'Yechimlar' ? 'Toshkentda ehtiyot qismlar' : 'Parts in Tashkent',
       description: t.nav.solutions === 'Решения' ? 'Крупный склад оригинальных запчастей в Сергели.' : t.nav.solutions === 'Yechimlar' ? 'Sergelida original ehtiyot qismlarning yirik ombori.' : 'Large warehouse of original spare parts in Sergeli.',
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547" />
-        </svg>
-      ),
+      icon: <Wrench className="w-8 h-8" strokeWidth={1.5} />
     },
     {
       title: t.nav.solutions === 'Решения' ? 'Сервис 24/7' : t.nav.solutions === 'Yechimlar' ? 'Servis 24/7' : 'Service 24/7',
       description: t.nav.solutions === 'Решения' ? 'Круглосуточная поддержка и выездные бригады.' : t.nav.solutions === 'Yechimlar' ? 'Kecha-yu kunduz qo\'llab-quvvatlash va chiqish brigadalari.' : 'Round-the-clock support and field service teams.',
-      icon: (
-        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
+      icon: <Clock className="w-8 h-8" strokeWidth={1.5} />
     },
   ];
 
+  const advantages = advantagesList.length > 0 
+    ? advantagesList.map((a: any) => ({
+        title: t.nav.solutions === 'Решения' ? a.title_ru : t.nav.solutions === 'Yechimlar' ? a.title_uz : a.title_ru,
+        description: t.nav.solutions === 'Решения' ? a.desc_ru : t.nav.solutions === 'Yechimlar' ? a.desc_uz : a.desc_ru,
+        icon: iconMap[a.icon] || <Star className="w-8 h-8" strokeWidth={1.5} />
+      }))
+    : fallbackAdvantages;
+
   return (
     <section className="section-padding bg-background relative overflow-hidden">
-      {/* ... */}
+      {/* Background decorations */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-radial from-sany-red/5 to-transparent rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3" />
+      
       <div className="container-custom relative z-10">
         <div className="text-center mb-16">
           <motion.span
@@ -63,7 +72,7 @@ export default function WhySanySection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {advantages.map((adv, i) => (
+          {advantages.map((adv: any, i: number) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}

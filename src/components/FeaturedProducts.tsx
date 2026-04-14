@@ -3,10 +3,18 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import NextImage from 'next/image';
-import { getFeaturedProducts, formatPrice } from '@/data/products';
+import { useTranslation } from '@/lib/i18n';
 
-export default function FeaturedProducts() {
-  const featured = getFeaturedProducts();
+export default function FeaturedProducts({ productsList = [] }: { productsList?: any[] }) {
+  const { t } = useTranslation();
+  if (!productsList || productsList.length === 0) return null;
+
+  const getSafeSrc = (src: any) => {
+    if (!src || typeof src !== 'string') return '/images/sany-logo.svg';
+    const trimmed = src.trim();
+    if (trimmed.startsWith('/') || trimmed.startsWith('http')) return trimmed;
+    return '/images/sany-logo.svg';
+  };
 
   return (
     <section className="section-padding bg-light-grey relative">
@@ -20,7 +28,7 @@ export default function FeaturedProducts() {
               viewport={{ once: true }}
               className="text-sany-red text-sm font-bold uppercase tracking-widest mb-3 block"
             >
-              Продукция
+              {t.nav.products}
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -29,8 +37,8 @@ export default function FeaturedProducts() {
               transition={{ delay: 0.1 }}
               className="text-4xl lg:text-5xl font-heading font-bold text-anthracite"
             >
-              Флагманы
-              <span className="gradient-text-red ml-3">каталога</span>
+              SANY
+              <span className="gradient-text-red ml-3">{t.products.catalog}</span>
             </motion.h2>
           </div>
           <motion.div
@@ -43,7 +51,7 @@ export default function FeaturedProducts() {
               href="/products"
               className="btn-primary !bg-anthracite hover:!bg-sany-red group"
             >
-              <span>Весь каталог</span>
+              <span>{t.hero.catalog}</span>
               <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -53,7 +61,7 @@ export default function FeaturedProducts() {
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featured.map((product, i) => (
+          {productsList.map((product, i) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 30 }}
@@ -66,7 +74,7 @@ export default function FeaturedProducts() {
                   {/* Image Area */}
                   <div className="relative h-52 bg-anthracite-light overflow-hidden">
                     <NextImage 
-                      src={product.images[0] || '/images/products/excavator.png'}
+                      src={getSafeSrc(product.thumbnail || product.images?.[0])}
                       alt={`SANY ${product.name} ${product.categoryLabel} - official distributor in Uzbekistan`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -81,9 +89,9 @@ export default function FeaturedProducts() {
                     </div>
                     {/* Quick Specs Overlay */}
                     <div className="absolute inset-0 bg-anthracite/90 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-center p-5">
-                      <p className="text-sany-red text-xs font-bold uppercase tracking-wider mb-3">Характеристики</p>
+                      <p className="text-sany-red text-xs font-bold uppercase tracking-wider mb-3">{t.products.specifications}</p>
                       <div className="space-y-2">
-                        {product.specs.slice(0, 4).map((spec, j) => (
+                        {product.specs.slice(0, 4).map((spec: any, j: number) => (
                           <div key={j} className="flex justify-between items-center">
                             <span className="text-white/50 text-xs">{spec.label}</span>
                             <span className="text-white text-xs font-semibold">{spec.value} {spec.unit}</span>

@@ -19,6 +19,7 @@ export const translations = {
       description: "Поставка, сервис и лизинг спецтехники SANY. Мы строим будущее вместе с вами, обеспечивая надёжность и инновации в каждом проекте.",
       learnMore: "Подробнее",
       catalog: "В каталог",
+      scrollDown: "Прокрутите вниз",
     },
     products: {
       catalog: "Каталог",
@@ -26,6 +27,13 @@ export const translations = {
       description: "Полный ассортимент строительной, горнодобывающей и дорожной техники SANY",
       searchPlaceholder: "Модель или тип...",
       allCategories: "Все категории",
+      categories: "Категории",
+      sorting: "Сортировка",
+      found: "Найдено",
+      models: "моделей",
+      specs: "Характеристики",
+      noResults: "Ничего не найдено",
+      noResultsDesc: "Попробуйте изменить параметры поиска или фильтры",
       details: "Подробнее",
       specifications: "Технические характеристики",
       relatedProducts: "Похожая техника",
@@ -70,6 +78,8 @@ export const translations = {
       overpayment: "Переплата",
       loanAmount: "Сумма кредита",
       name: "Ваше имя",
+      advantagesTitle: "Преимущества лизинга",
+      howToTitle: "Как оформить лизинг?",
     },
     contacts: {
       title: "Контакты",
@@ -81,6 +91,15 @@ export const translations = {
       workingHours: "График работы",
       formTitle: "Оставить заявку",
       submit: "Отправить",
+    },
+    error: {
+      notFound: "Страница не найдена",
+      notFoundDesc: "Извините, запрашиваемая вами страница не существует или была перенесена.",
+      backHome: "Вернуться на главную",
+    },
+    partners: {
+      subtitle: "Доверие и надёжность",
+      title: "Наши клиенты и партнёры",
     }
   },
   uz: {
@@ -101,13 +120,21 @@ export const translations = {
       description: "SANY texnikalarini yetkazib berish, servis va lizing. Biz siz bilan birga kelajakni quramiz, har bir loyihada ishonchlilik va innovatsiyalarni ta'minlaymiz.",
       learnMore: "Batafsil",
       catalog: "Katalogga",
+      scrollDown: "Pastga tushing",
     },
     products: {
       catalog: "Katalog",
       title: "Sanoat katalogi",
       description: "SANY qurilish, konchilik va yo'l texnikalarining to'liq assortimenti",
       searchPlaceholder: "Model yoki tur...",
-      allCategories: "Barcha toifalar",
+      allCategories: "Barcha kategoriyalar",
+      categories: "Kategoriyalar",
+      sorting: "Saralash",
+      found: "Topildi",
+      models: "model",
+      specs: "Xususiyatlar",
+      noResults: "Hech narsa topilmadi",
+      noResultsDesc: "Qidiruv parametrlarini yoki filtrlarni o'zgartirib ko'ring",
       details: "Batafsil",
       specifications: "Texnik xususiyatlari",
       relatedProducts: "O'xshash texnikalar",
@@ -152,6 +179,8 @@ export const translations = {
       overpayment: "Ortiqcha to'lov",
       loanAmount: "Kredit summasi",
       name: "Ismingiz",
+      advantagesTitle: "Lizing afzalliklari",
+      howToTitle: "Lizingni qanday rasmiylashtirish kerak?",
     },
     contacts: {
       title: "Kontaktlar",
@@ -163,6 +192,15 @@ export const translations = {
       workingHours: "Ish tartibi",
       formTitle: "Ariza qoldirish",
       submit: "Yuborish",
+    },
+    error: {
+      notFound: "Sahifa topilmadi",
+      notFoundDesc: "Kechirasiz, siz qidirayotgan sahifa mavjud emas yoki ko'chirib yuborilgan.",
+      backHome: "Bosh sahifaga qaytish",
+    },
+    partners: {
+      subtitle: "Ishonch va sifat",
+      title: "Mijozlarimiz va hamkorlarimiz",
     }
   },
   en: {
@@ -182,7 +220,8 @@ export const translations = {
       titlePart2: "special equipment",
       description: "Supply, service, and leasing of SANY equipment. We build the future together with you, ensuring reliability and innovation in every project.",
       learnMore: "Learn More",
-      catalog: "To Catalog",
+      catalog: "Go to catalog",
+      scrollDown: "Scroll Down",
     },
     whySany: {
       title: "Advantages",
@@ -194,7 +233,14 @@ export const translations = {
       title: "Industrial Catalog",
       description: "Complete range of SANY construction, mining, and road equipment",
       searchPlaceholder: "Model or type...",
-      allCategories: "All categories",
+      allCategories: "All Categories",
+      categories: "Categories",
+      sorting: "Sorting",
+      found: "Found",
+      models: "models",
+      specs: "Specifications",
+      noResults: "No results found",
+      noResultsDesc: "Try changing your search parameters or filters",
       details: "Details",
       specifications: "Technical Specifications",
       relatedProducts: "Related Equipment",
@@ -234,6 +280,8 @@ export const translations = {
       overpayment: "Overpayment",
       loanAmount: "Loan Amount",
       name: "Your Name",
+      advantagesTitle: "Leasing Advantages",
+      howToTitle: "How to get leasing?",
     },
     contacts: {
       title: "Contacts",
@@ -245,6 +293,15 @@ export const translations = {
       workingHours: "Working Hours",
       formTitle: "Leave a Request",
       submit: "Submit",
+    },
+    error: {
+      notFound: "Page Not Found",
+      notFoundDesc: "Sorry, the page you are looking for does not exist or has been moved.",
+      backHome: "Back to Home",
+    },
+    partners: {
+      subtitle: "Trust and Reliability",
+      title: "Our Clients and Partners",
     }
   }
 };

@@ -5,8 +5,15 @@ import { companyInfo, phoneNumbers } from '@/data/projects';
 import { categoryLabels } from '@/data/products';
 import { useTranslation } from '@/lib/i18n';
 
-export default function Footer() {
+export default function Footer({ settings }: { settings?: any }) {
   const { t } = useTranslation();
+  const isRu = t.nav.solutions === 'Решения';
+  const s = settings || {};
+  const activePhones = [
+    { label: isRu ? 'Отдел продаж' : 'Sotuv bo\'limi', number: s.phone_sales || '+998 91 772 72 73' },
+    { label: isRu ? 'Cервис' : 'Servis', number: s.phone_service || '+998 93 555 00 95' },
+    { label: isRu ? 'Лизинг' : 'Lizing', number: s.phone_leasing || '+998 99 859 31 14' }
+  ];
 
   return (
     <footer className="bg-anthracite text-white relative overflow-hidden">
@@ -46,7 +53,7 @@ export default function Footer() {
               </svg>
             </div>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
-               {companyInfo.fullName}. {t.hero.description.slice(0, 80)}...
+               SANY AUTOMOBILE MANUFACTURING CENTRAL ASIA. {t.hero.description.slice(0, 80)}...
             </p>
           </div>
 
@@ -65,11 +72,9 @@ export default function Footer() {
           <div>
             <h3 className="font-heading font-bold text-lg mb-6 text-white">{t.nav.products}</h3>
             <ul className="space-y-3">
-              {Object.entries(categoryLabels).slice(0, 5).map(([key, label]) => (
-                <li key={key}>
-                  <Link href={`/products?category=${key}`} className="text-white/50 text-sm hover:text-sany-red transition-colors flex items-center gap-2 underline-offset-4 hover:underline">{label}</Link>
-                </li>
-              ))}
+              <li><Link href="/products?category=excavator" className="text-white/50 text-sm hover:text-sany-red transition-colors flex items-center gap-2 underline-offset-4 hover:underline">{isRu ? 'Экскаваторы' : 'Ekskavatorlar'}</Link></li>
+              <li><Link href="/products?category=crane" className="text-white/50 text-sm hover:text-sany-red transition-colors flex items-center gap-2 underline-offset-4 hover:underline">{isRu ? 'Краны' : 'Kranlar'}</Link></li>
+              <li><Link href="/products?category=truck" className="text-white/50 text-sm hover:text-sany-red transition-colors flex items-center gap-2 underline-offset-4 hover:underline">{isRu ? 'Самосвалы' : 'Agregatlar'}</Link></li>
             </ul>
           </div>
 
@@ -77,13 +82,13 @@ export default function Footer() {
           <div>
             <h3 className="font-heading font-bold text-lg mb-6 text-white">{t.contacts.title}</h3>
             <div className="space-y-4">
-              <p className="text-white/50 text-sm">{companyInfo.address}</p>
+              <p className="text-white/50 text-sm">{isRu ? s.address_ru : s.address_uz}</p>
               <div className="flex flex-col gap-2">
-                {phoneNumbers.map((ph, i) => (
+                {activePhones.map((ph, i) => (
                   <a key={i} href={`tel:${ph.number}`} className="text-white/60 text-sm hover:text-sany-red transition-colors">{ph.number}</a>
                 ))}
               </div>
-              <p className="text-white/30 text-xs">{companyInfo.workingHours}</p>
+              <p className="text-white/30 text-xs">{isRu ? s.working_hours_ru : s.working_hours_uz}</p>
             </div>
           </div>
         </div>

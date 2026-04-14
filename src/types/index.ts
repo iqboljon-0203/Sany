@@ -22,8 +22,17 @@ export interface Product {
   slug: string;
   category: ProductCategory;
   categoryLabel: string;
+  categoryLabelUz?: string;
+  categoryLabelRu?: string;
+  categoryLabelEn?: string;
   shortDescription: string;
+  shortDescriptionUz?: string;
+  shortDescriptionRu?: string;
+  shortDescriptionEn?: string;
   description: string;
+  descriptionUz?: string;
+  descriptionRu?: string;
+  descriptionEn?: string;
   power: string;
   operatingWeight: string;
   bucketCapacity?: string;
@@ -68,10 +77,22 @@ export interface LeasingResult {
 export interface Project {
   id: string;
   title: string;
+  titleUz?: string;
+  titleRu?: string;
+  titleEn?: string;
   location: string;
+  locationUz?: string;
+  locationRu?: string;
+  locationEn?: string;
   description: string;
+  descriptionUz?: string;
+  descriptionRu?: string;
+  descriptionEn?: string;
   image: string;
   category: string;
+  categoryUz?: string;
+  categoryRu?: string;
+  categoryEn?: string;
   machines: string[];
 }
 
