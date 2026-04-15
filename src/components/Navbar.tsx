@@ -155,21 +155,24 @@ export default function Navbar({ settings }: { settings?: any }) {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
-                aria-label="Menu"
+                className={`lg:hidden flex justify-center items-center w-10 h-10 rounded-full transition-all duration-300 ${
+                  isMobileOpen
+                    ? 'bg-sany-red/10 border border-sany-red/30'
+                    : 'hover:bg-foreground/5'
+                }`}
+                aria-label={isMobileOpen ? 'Yopish' : 'Menu'}
               >
-                <motion.span
-                  animate={isMobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-                  className="w-6 h-0.5 bg-foreground rounded-full block"
-                />
-                <motion.span
-                  animate={isMobileOpen ? { opacity: 0 } : { opacity: 1 }}
-                  className="w-6 h-0.5 bg-foreground rounded-full block"
-                />
-                <motion.span
-                  animate={isMobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-                  className="w-6 h-0.5 bg-foreground rounded-full block"
-                />
+                {isMobileOpen ? (
+                  <svg className="w-5 h-5 text-sany-red" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <span className="flex flex-col gap-1.5">
+                    <span className="w-6 h-0.5 bg-foreground rounded-full block" />
+                    <span className="w-6 h-0.5 bg-foreground rounded-full block" />
+                    <span className="w-4 h-0.5 bg-foreground rounded-full block" />
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -190,7 +193,7 @@ export default function Navbar({ settings }: { settings?: any }) {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
               transition={{ delay: 0.1 }}
-              className="flex flex-col justify-center items-center h-full gap-2 pt-20"
+              className="flex flex-col items-center min-h-full gap-2 pt-32 pb-10 overflow-y-auto"
             >
               {[
                 { href: '/products', label: t.nav.products },
