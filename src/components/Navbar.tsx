@@ -193,7 +193,7 @@ export default function Navbar({ settings }: { settings?: any }) {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
               transition={{ delay: 0.1 }}
-              className="flex flex-col items-center min-h-full gap-2 pt-32 pb-10 overflow-y-auto"
+              className="flex flex-col items-center min-h-full gap-2 pt-32 pb-32 overflow-y-auto"
             >
               {[
                 { href: '/products', label: t.nav.products },
