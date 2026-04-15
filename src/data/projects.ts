@@ -92,7 +92,7 @@ export const companyInfo = {
   address: 'г. Ташкент, Сергелийский район, ул. 2- Алишер Навои пр.2, дом 22',
   email: 'info@sany.uz',
   workingHours: 'Пн-Пт: 09:00 - 18:00, Сб: 09:00 - 15:00',
-  telegram: 'https://t.me/sany_uzbekistan',
+  telegram: 'https://t.me/SANY_TAJIBAEVA',
   whatsapp: 'https://wa.me/998917727273',
   mapCoords: { lat: 41.311081, lng: 69.279737 },
 };

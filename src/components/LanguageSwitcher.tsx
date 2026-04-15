@@ -34,19 +34,17 @@ export default function LanguageSwitcher() {
     <div className="relative inline-block text-left" ref={containerRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 px-4 py-2 bg-card-bg/60 backdrop-blur-md border border-border-color rounded-xl hover:border-sany-red/50 transition-all shadow-sm focus:outline-none min-w-[80px] justify-between"
+        className="flex items-center gap-2.5 px-3 py-2 bg-card-bg/60 backdrop-blur-md border border-border-color rounded-xl hover:border-sany-red/50 transition-all shadow-sm focus:outline-none"
       >
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-3.5 rounded-sm overflow-hidden shadow-sm flex-shrink-0">
-            <img 
-              src={currentLang.flagUrl} 
-              alt={currentLang.label} 
-              className="w-full h-full object-cover" 
-            />
-          </div>
-          <span className="text-[12px] font-bold tracking-wider text-foreground/80 uppercase">{currentLang.label}</span>
+        <div className="w-5 h-3.5 rounded-sm overflow-hidden shadow-sm flex-shrink-0">
+          <img 
+            src={currentLang.flagUrl} 
+            alt={currentLang.label} 
+            className="w-full h-full object-cover" 
+          />
         </div>
-        <ChevronDown className={`w-3.5 h-3.5 text-foreground/40 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="text-[11px] font-bold tracking-wider text-foreground/80">{currentLang.label}</span>
+        <ChevronDown className={`w-3 h-3 text-foreground/40 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       <AnimatePresence>

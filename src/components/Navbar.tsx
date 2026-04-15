@@ -193,7 +193,7 @@ export default function Navbar({ settings }: { settings?: any }) {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
               transition={{ delay: 0.1 }}
-              className="flex flex-col items-center min-h-full gap-2 pt-32 pb-32 overflow-y-auto"
+              className="flex flex-col items-center min-h-full gap-2 pt-32 pb-10 overflow-y-auto"
             >
               {[
                 { href: '/products', label: t.nav.products },
@@ -223,19 +223,9 @@ export default function Navbar({ settings }: { settings?: any }) {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="mt-8 flex flex-col items-center gap-4"
+                className="mt-auto mb-10 flex flex-col items-center gap-4"
               >
-                {activePhones.map((phone, i) => (
-                  <a
-                    key={i}
-                    href={`tel:${phone.number}`}
-                    className="text-foreground/60 text-sm hover:text-sany-red transition-colors"
-                  >
-                    {phone.label}: {phone.number}
-                  </a>
-                ))}
-
-                <div className="flex items-center gap-4 mt-4 py-4 px-8 bg-card-bg rounded-2xl border border-border-color shadow-sm">
+                <div className="flex items-center gap-4 py-4 px-8 bg-card-bg rounded-2xl border border-border-color shadow-sm">
                   <ThemeToggle />
                   <div className="w-px h-6 bg-border-color" />
                   <LanguageSwitcher />

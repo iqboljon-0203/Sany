@@ -140,7 +140,7 @@ export default async function RootLayout({
                 "availableLanguage": ["Uzbek", "Russian", "English"]
               },
               "sameAs": [
-                settings?.telegram_url || "https://t.me/sany_uz"
+                settings?.telegram_url || "https://t.me/SANY_TAJIBAEVA"
               ]
             }),
           }}

@@ -33,7 +33,7 @@ export default function StickyContactWidget({ settings }: { settings?: any }) {
             {/* Telegram */}
             {s.telegram_url && (
               <motion.a
-                href={s.telegram_url}
+                href="https://t.me/SANY_TAJIBAEVA"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1 }}
