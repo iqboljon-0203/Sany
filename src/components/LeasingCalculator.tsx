@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { FormStatus } from '@/types';
 import { useTranslation } from '@/lib/i18n';
 
@@ -232,36 +232,80 @@ export default function LeasingCalculator({ config }: { config?: any }) {
             </div>
 
             {/* Application Form */}
-            <div className="bg-card-bg border border-border-color rounded-2xl p-6 sm:p-8 flex-1 mt-4 relative z-10 w-full">
-              <h3 className="text-foreground font-heading font-bold text-xl mb-6">{t.leasing.apply}</h3>
-              <form onSubmit={handleSubmitLeasing} className="flex flex-col gap-4">
-                <input
-                  type="text"
-                  placeholder={t.leasing.name}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="form-input-light"
-                  required
-                />
-                <input
-                  type="tel"
-                  placeholder="+998 __ ___ __ __"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="form-input-light"
-                  required
-                />
-                <button
-                  type="submit"
-                  disabled={formStatus === 'loading'}
-                  className="btn-primary w-full justify-center !py-4 disabled:opacity-50"
-                >
-                  {formStatus === 'loading' && '...'}
-                  {formStatus === 'success' && '✓'}
-                  {formStatus === 'error' && '!'}
-                  {formStatus === 'idle' && t.leasing.apply}
-                </button>
-              </form>
+            <div className="bg-card-bg border border-border-color rounded-2xl p-6 sm:p-8 flex-1 mt-4 relative z-10 w-full overflow-hidden min-h-[300px] flex flex-col">
+              <AnimatePresence mode="wait">
+                {formStatus === 'success' ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.05 }}
+                    className="flex-1 flex flex-col items-center justify-center text-center p-4"
+                  >
+                    <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
+                      <svg className="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <h3 className="text-2xl font-heading font-bold text-foreground mb-3">
+                      {t.nav.solutions === 'Решения' ? 'Заявка принята!' : 'Arizangiz qabul qilindi!'}
+                    </h3>
+                    <p className="text-text-muted">
+                      {t.nav.solutions === 'Решения' 
+                        ? 'Мы свяжемся с вами в ближайшее время для уточнения деталей.' 
+                        : 'Tez orada mutaxassislarimiz siz bilan bog\'lanishadi.'}
+                    </p>
+                    <button 
+                      onClick={() => setFormStatus('idle')}
+                      className="mt-8 text-sany-red font-bold hover:underline"
+                    >
+                      {t.nav.solutions === 'Решения' ? 'Вернуться' : 'Yopish'}
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex-1 flex flex-col"
+                  >
+                    <h3 className="text-foreground font-heading font-bold text-xl mb-6">{t.leasing.apply}</h3>
+                    <form onSubmit={handleSubmitLeasing} className="flex flex-col gap-4 flex-1">
+                      <input
+                        type="text"
+                        placeholder={t.leasing.name}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="form-input-light"
+                        required
+                      />
+                      <input
+                        type="tel"
+                        placeholder="+998 __ ___ __ __"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="form-input-light"
+                        required
+                      />
+                      
+                      <div className="mt-auto pt-6">
+                        <button
+                          type="submit"
+                          disabled={formStatus === 'loading'}
+                          className="btn-primary w-full justify-center !py-4 disabled:opacity-50"
+                        >
+                          {formStatus === 'loading' ? (
+                            <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          ) : (
+                            t.leasing.apply
+                          )}
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>

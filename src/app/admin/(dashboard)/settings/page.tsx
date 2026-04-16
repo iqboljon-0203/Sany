@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Save } from 'lucide-react';
+import { useToast } from '@/components/admin/ToastProvider';
 
 export default function SettingsAdminPage() {
   const supabase = createClient();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
@@ -38,8 +40,11 @@ export default function SettingsAdminPage() {
     const { id, ...payload } = formData;
     if (id) {
       const { error } = await supabase.from('settings').update(payload).eq('id', id);
-      if (error) alert(error.message);
-      else alert('Sozlamalar saqlandi! ✅');
+      if (error) {
+        toast('Xatolik: ' + error.message, 'error');
+      } else {
+        toast('Sozlamalar saqlandi! ✅', 'success');
+      }
     }
     setSaving(false);
   };

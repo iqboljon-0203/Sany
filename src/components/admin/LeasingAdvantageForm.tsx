@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { Save, X } from 'lucide-react';
+import { Save, X, Copy } from 'lucide-react';
 import Link from 'next/link';
+import { useToast } from './ToastProvider';
 
 export default function LeasingAdvantageForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -18,6 +20,14 @@ export default function LeasingAdvantageForm({ initialData }: { initialData?: an
     title_en: initialData?.title_en || '',
     order_index: initialData?.order_index || 0,
   });
+
+  const copyFromRu = (fieldBase: string, targetLang: 'uz' | 'en') => {
+    const sourceValue = formData[`${fieldBase}_ru` as keyof typeof formData] as string;
+    setFormData(prev => ({
+      ...prev,
+      [`${fieldBase}_${targetLang}`]: sourceValue
+    }));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -39,8 +49,9 @@ export default function LeasingAdvantageForm({ initialData }: { initialData?: an
 
     setLoading(false);
     if (errorResult) {
-      alert('Xatolik: ' + errorResult.message);
+      toast('Xatolik: ' + errorResult.message, 'error');
     } else {
+      toast(initialData?.id ? 'Saqlandi' : 'Yaratildi', 'success');
       router.push('/admin/leasing');
       router.refresh();
     }
@@ -60,7 +71,12 @@ export default function LeasingAdvantageForm({ initialData }: { initialData?: an
             <input type="number" name="order_index" value={formData.order_index} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Nomi (UZ) *</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Nomi (UZ) *</label>
+              <button type="button" onClick={() => copyFromRu('title', 'uz')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> nusxa (RU)
+              </button>
+            </div>
             <input required type="text" name="title_uz" value={formData.title_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Tezkor tasdiqlash" />
           </div>
           <div>
@@ -68,7 +84,12 @@ export default function LeasingAdvantageForm({ initialData }: { initialData?: an
             <input required type="text" name="title_ru" value={formData.title_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Быстрое одобрение" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Nomi (EN) *</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Name (EN) *</label>
+              <button type="button" onClick={() => copyFromRu('title', 'en')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> copy (RU)
+              </button>
+            </div>
             <input required type="text" name="title_en" value={formData.title_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Fast approval" />
           </div>
         </div>

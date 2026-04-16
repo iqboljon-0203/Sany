@@ -83,7 +83,7 @@ export default function FeaturedProducts({ productsList = [] }: { productsList?:
                     <div className="absolute inset-0 bg-gradient-to-t from-anthracite-light/20 to-transparent mix-blend-overlay opacity-60" />
                     {/* Category Badge */}
                     <div className="absolute top-3 left-3">
-                      <span className="px-3 py-1 bg-anthracite/80 backdrop-blur text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                      <span className="px-3 py-1 bg-sany-red text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-lg">
                         {product.categoryLabel}
                       </span>
                     </div>
@@ -92,9 +92,9 @@ export default function FeaturedProducts({ productsList = [] }: { productsList?:
                       <p className="text-sany-red text-xs font-bold uppercase tracking-wider mb-3">{t.products.specifications}</p>
                       <div className="space-y-2">
                         {product.specs.slice(0, 4).map((spec: any, j: number) => (
-                          <div key={j} className="flex justify-between items-center">
-                            <span className="text-white/50 text-xs">{spec.label}</span>
-                            <span className="text-white text-xs font-semibold">{spec.value} {spec.unit}</span>
+                          <div key={j} className="flex justify-between items-center border-b border-white/5 pb-1 last:border-0">
+                            <span className="text-white/70 text-[11px] uppercase tracking-tight">{spec.label}</span>
+                            <span className="text-white text-[11px] font-bold">{spec.value} {spec.unit}</span>
                           </div>
                         ))}
                       </div>

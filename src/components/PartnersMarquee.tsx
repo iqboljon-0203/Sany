@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import NextImage from 'next/image';
 import { useTranslation } from '@/lib/i18n';
 
 export default function PartnersMarquee({ partnersList = [] }: { partnersList?: any[] }) {
@@ -57,16 +58,13 @@ export default function PartnersMarquee({ partnersList = [] }: { partnersList?: 
             >
               <div className="w-56 h-auto min-h-[120px] py-5 bg-card-bg rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-border-color flex items-center justify-center px-4 hover:shadow-[0_8px_30px_-4px_rgba(190,17,26,0.1)] hover:-translate-y-1 transition-all duration-400 group">
                 <div className="text-center w-full flex flex-col items-center">
-                  <div className="w-16 h-16 mx-auto mb-3 flex items-center justify-center relative bg-anthracite/5 rounded-xl group-hover:bg-card-bg transition-colors">
-                    <img 
+                  <div className="w-16 h-16 mx-auto mb-3 flex items-center justify-center relative bg-anthracite/5 rounded-xl group-hover:bg-card-bg transition-colors overflow-hidden">
+                    <NextImage 
                       src={partner.logo}
-                      alt={partner.name}
-                      title={partner.name}
-                      className="w-10 h-10 object-contain group-hover:scale-110 drop-shadow-sm transition-transform duration-300"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=1A1A1A&color=fff&bold=true`;
-                      }}
+                      alt={`SANY partner - ${partner.name}`}
+                      width={40}
+                      height={40}
+                      className="object-contain group-hover:scale-110 drop-shadow-sm transition-transform duration-300"
                     />
                   </div>
                   <p className="text-[13px] text-foreground/80 font-bold leading-tight line-clamp-2 group-hover:text-sany-red transition-colors">

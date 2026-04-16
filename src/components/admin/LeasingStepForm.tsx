@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { Save, X } from 'lucide-react';
+import { Save, X, Copy } from 'lucide-react';
 import Link from 'next/link';
+import { useToast } from './ToastProvider';
 
 export default function LeasingStepForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -27,6 +29,14 @@ export default function LeasingStepForm({ initialData }: { initialData?: any }) 
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const copyFromRu = (fieldBase: string, targetLang: 'uz' | 'en') => {
+    const sourceValue = formData[`${fieldBase}_ru` as keyof typeof formData] as string;
+    setFormData(prev => ({
+      ...prev,
+      [`${fieldBase}_${targetLang}`]: sourceValue
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -42,8 +52,9 @@ export default function LeasingStepForm({ initialData }: { initialData?: any }) 
 
     setLoading(false);
     if (errorResult) {
-      alert('Xatolik: ' + errorResult.message);
+      toast('Xatolik: ' + errorResult.message, 'error');
     } else {
+      toast(initialData?.id ? 'Saqlandi' : 'Yaratildi', 'success');
       router.push('/admin/leasing');
       router.refresh();
     }
@@ -63,7 +74,12 @@ export default function LeasingStepForm({ initialData }: { initialData?: any }) 
             <input type="number" name="order_index" value={formData.order_index} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Sarlavha (UZ) *</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Sarlavha (UZ) *</label>
+              <button type="button" onClick={() => copyFromRu('title', 'uz')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> nusxa (RU)
+              </button>
+            </div>
             <input required type="text" name="title_uz" value={formData.title_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Arizani to'ldiring" />
           </div>
           <div>
@@ -71,11 +87,23 @@ export default function LeasingStepForm({ initialData }: { initialData?: any }) 
             <input required type="text" name="title_ru" value={formData.title_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Заполните заявку" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Sarlavha (EN) *</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Title (EN) *</label>
+              <button type="button" onClick={() => copyFromRu('title', 'en')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> copy (RU)
+              </button>
+            </div>
             <input required type="text" name="title_en" value={formData.title_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Fill the form" />
           </div>
+          <div className="md:col-span-1"></div>
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Tavsif (UZ)</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Tavsif (UZ)</label>
+              <button type="button" onClick={() => copyFromRu('desc', 'uz')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> nusxa (RU)
+              </button>
+            </div>
             <textarea rows={3} name="desc_uz" value={formData.desc_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
           </div>
           <div>
@@ -83,7 +111,12 @@ export default function LeasingStepForm({ initialData }: { initialData?: any }) 
             <textarea rows={3} name="desc_ru" value={formData.desc_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Tavsif (EN)</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Description (EN)</label>
+              <button type="button" onClick={() => copyFromRu('desc', 'en')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> copy (RU)
+              </button>
+            </div>
             <textarea rows={3} name="desc_en" value={formData.desc_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
           </div>
         </div>

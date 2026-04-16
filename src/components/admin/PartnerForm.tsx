@@ -6,10 +6,12 @@ import { createClient } from '@/lib/supabase/client';
 import { Save } from 'lucide-react';
 import Link from 'next/link';
 import ImageUpload from './ImageUpload';
+import { useToast } from './ToastProvider';
 
 export default function PartnerForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState(initialData?.name || '');
@@ -32,8 +34,9 @@ export default function PartnerForm({ initialData }: { initialData?: any }) {
 
     setLoading(false);
     if (errorResult) {
-      alert('Xatolik: ' + errorResult.message);
+      toast('Xatolik: ' + errorResult.message, 'error');
     } else {
+      toast(initialData?.id ? 'Saqlandi' : 'Yaratildi', 'success');
       router.push('/admin/partners');
       router.refresh();
     }

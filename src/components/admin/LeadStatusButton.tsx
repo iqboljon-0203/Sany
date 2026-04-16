@@ -3,18 +3,25 @@
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
+import { useToast } from './ToastProvider';
 
 export default function LeadStatusButton({ lead }: { lead: any }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
 
   const toggleStatus = async () => {
     setLoading(true);
     const newStatus = lead.status === 'Новый' ? 'Обработан' : 'Новый';
-    await supabase.from('leads').update({ status: newStatus }).eq('id', lead.id);
+    const { error } = await supabase.from('leads').update({ status: newStatus }).eq('id', lead.id);
     setLoading(false);
-    router.refresh();
+    if (error) {
+      toast('Xatolik: ' + error.message, 'error');
+    } else {
+      toast(`Status "${newStatus}" ga o'zgardi`, 'success');
+      router.refresh();
+    }
   };
 
   return (

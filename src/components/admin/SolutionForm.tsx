@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { Save, X, Plus } from 'lucide-react';
+import { Save, X, Plus, Copy } from 'lucide-react';
 import Link from 'next/link';
 import ImageUpload from './ImageUpload';
+import { useToast } from './ToastProvider';
 
 export default function SolutionForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -32,6 +34,14 @@ export default function SolutionForm({ initialData }: { initialData?: any }) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: name === 'order_index' ? Number(value) : value }));
+  };
+
+  const copyFromRu = (fieldBase: string, targetLang: 'uz' | 'en') => {
+    const sourceValue = formData[`${fieldBase}_ru` as keyof typeof formData] as string;
+    setFormData(prev => ({
+      ...prev,
+      [`${fieldBase}_${targetLang}`]: sourceValue
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,8 +67,9 @@ export default function SolutionForm({ initialData }: { initialData?: any }) {
 
     setLoading(false);
     if (errorResult) {
-      alert('Xatolik: ' + errorResult.message);
+      toast('Xatolik: ' + errorResult.message, 'error');
     } else {
+      toast(initialData?.id ? 'Saqlandi' : 'Yaratildi', 'success');
       router.push('/admin/solutions');
       router.refresh();
     }
@@ -78,7 +89,12 @@ export default function SolutionForm({ initialData }: { initialData?: any }) {
             <input type="number" name="order_index" value={formData.order_index} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Nomi (O'zbekcha) *</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Nomi (O'zbekcha) *</label>
+              <button type="button" onClick={() => copyFromRu('title', 'uz')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> nusxa (RU)
+              </button>
+            </div>
             <input required type="text" name="title_uz" value={formData.title_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Konchilik" />
           </div>
           <div>
@@ -86,11 +102,23 @@ export default function SolutionForm({ initialData }: { initialData?: any }) {
             <input required type="text" name="title_ru" value={formData.title_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Горнодобыча" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Nomi (EN) *</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Name (English) *</label>
+              <button type="button" onClick={() => copyFromRu('title', 'en')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> copy (RU)
+              </button>
+            </div>
             <input required type="text" name="title_en" value={formData.title_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Mining" />
           </div>
+          <div className="md:col-span-1"></div> {/* Spacer */}
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Tavsif (UZ) *</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Tavsif (UZ) *</label>
+              <button type="button" onClick={() => copyFromRu('desc', 'uz')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> nusxa (RU)
+              </button>
+            </div>
             <textarea required rows={3} name="desc_uz" value={formData.desc_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
           </div>
           <div>
@@ -98,7 +126,12 @@ export default function SolutionForm({ initialData }: { initialData?: any }) {
             <textarea required rows={3} name="desc_ru" value={formData.desc_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Tavsif (EN) *</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Description (EN) *</label>
+              <button type="button" onClick={() => copyFromRu('desc', 'en')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> copy (RU)
+              </button>
+            </div>
             <textarea required rows={3} name="desc_en" value={formData.desc_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
           </div>
         </div>

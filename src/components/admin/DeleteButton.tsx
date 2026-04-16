@@ -4,11 +4,13 @@ import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { useToast } from './ToastProvider';
 
 export default function DeleteButton({ table, id }: { table: string, id: string }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
 
   const handleDelete = async () => {
     if (!window.confirm('Вы уверены, что хотите удалить этот элемент?')) {
@@ -19,9 +21,10 @@ export default function DeleteButton({ table, id }: { table: string, id: string 
     const { error } = await supabase.from(table).delete().eq('id', id);
     
     if (error) {
-      alert('Ошибка при удалении: ' + error.message);
+      toast('Xatolik: ' + error.message, 'error');
       setIsDeleting(false);
     } else {
+      toast('Muvaffaqiyatli o\'chirildi', 'success');
       router.refresh(); // Refresh the server component to get new data
     }
   };

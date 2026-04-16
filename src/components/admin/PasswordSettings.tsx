@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Save, KeyRound } from 'lucide-react';
+import { useToast } from './ToastProvider';
 
 export default function PasswordSettings() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-
+  const { toast } = useToast();
   const supabase = createClient();
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
@@ -35,9 +36,9 @@ export default function PasswordSettings() {
     setLoading(false);
 
     if (error) {
-      setMessage({ type: 'error', text: error.message });
+      toast('Xatolik: ' + error.message, 'error');
     } else {
-      setMessage({ type: 'success', text: 'Пароль успешно обновлен!' });
+      toast('Parol muvaffaqiyatli yangilandi!', 'success');
       setPassword('');
       setConfirmPassword('');
     }

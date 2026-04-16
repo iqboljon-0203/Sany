@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { Save } from 'lucide-react';
+import { Save, Copy } from 'lucide-react';
 import Link from 'next/link';
+import { useToast } from './ToastProvider';
 
 const iconOptions = [
   { value: 'Clock', label: '🕒 Clock — Vaqt / 24/7' },
@@ -21,6 +22,7 @@ const iconOptions = [
 export default function ServiceForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -33,6 +35,14 @@ export default function ServiceForm({ initialData }: { initialData?: any }) {
     desc_en: initialData?.desc_en || '',
     order_index: initialData?.order_index ?? 0,
   });
+
+  const copyFromRu = (fieldBase: string, targetLang: 'uz' | 'en') => {
+    const sourceValue = formData[`${fieldBase}_ru` as keyof typeof formData] as string;
+    setFormData(prev => ({
+      ...prev,
+      [`${fieldBase}_${targetLang}`]: sourceValue
+    }));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -54,8 +64,9 @@ export default function ServiceForm({ initialData }: { initialData?: any }) {
 
     setLoading(false);
     if (errorResult) {
-      alert('Xatolik: ' + errorResult.message);
+      toast('Xatolik: ' + errorResult.message, 'error');
     } else {
+      toast(initialData?.id ? 'Saqlandi' : 'Yaratildi', 'success');
       router.push('/admin/services');
       router.refresh();
     }
@@ -79,16 +90,37 @@ export default function ServiceForm({ initialData }: { initialData?: any }) {
             <input type="number" name="order_index" value={formData.order_index} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Sarlavha (O'zbekcha) *</label>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Sarlavha (O'zbekcha) *</label>
+              <button type="button" onClick={() => copyFromRu('title', 'uz')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> nusxa (RU)
+              </button>
+            </div>
             <input required type="text" name="title_uz" value={formData.title_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Qo'llab-quvvatlash 24/7" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Sarlavha (EN) *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Sarlavha (Ruscha) *</label>
+            <input required type="text" name="title_ru" value={formData.title_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Поддержка 24/7" />
+          </div>
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium text-gray-700">Title (EN) *</label>
+              <button type="button" onClick={() => copyFromRu('title', 'en')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                <Copy className="w-2.5 h-2.5"/> copy (RU)
+              </button>
+            </div>
             <input required type="text" name="title_en" value={formData.title_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="24/7 Support" />
           </div>
+          <div className="md:col-span-1"></div> {/* Spacer */}
+
           <div className="md:col-span-2 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Tavsif (UZ) *</label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Tavsif (UZ) *</label>
+                <button type="button" onClick={() => copyFromRu('desc', 'uz')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                  <Copy className="w-2.5 h-2.5"/> nusxa (RU)
+                </button>
+              </div>
               <textarea required rows={3} name="desc_uz" value={formData.desc_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
             <div>
@@ -96,7 +128,12 @@ export default function ServiceForm({ initialData }: { initialData?: any }) {
               <textarea required rows={3} name="desc_ru" value={formData.desc_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Tavsif (EN) *</label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Tavsif (EN) *</label>
+                <button type="button" onClick={() => copyFromRu('desc', 'en')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                  <Copy className="w-2.5 h-2.5"/> copy (RU)
+                </button>
+              </div>
               <textarea required rows={3} name="desc_en" value={formData.desc_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
           </div>

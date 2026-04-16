@@ -37,8 +37,8 @@ export default function WhySanySection({ advantagesList = [] }: { advantagesList
 
   const advantages = advantagesList.length > 0 
     ? advantagesList.map((a: any) => ({
-        title: t.nav.solutions === 'Решения' ? a.title_ru : t.nav.solutions === 'Yechimlar' ? a.title_uz : a.title_ru,
-        description: t.nav.solutions === 'Решения' ? a.desc_ru : t.nav.solutions === 'Yechimlar' ? a.desc_uz : a.desc_ru,
+        title: t.nav.solutions === 'Решения' ? a.title_ru : t.nav.solutions === 'Yechimlar' ? a.title_uz : a.title_en || a.title_ru,
+        description: t.nav.solutions === 'Решения' ? a.desc_ru : t.nav.solutions === 'Yechimlar' ? a.desc_uz : a.desc_en || a.desc_ru,
         icon: iconMap[a.icon] || <Star className="w-8 h-8" strokeWidth={1.5} />
       }))
     : fallbackAdvantages;

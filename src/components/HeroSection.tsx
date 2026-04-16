@@ -29,7 +29,9 @@ export default function HeroSection({ settings }: { settings?: any }) {
           alt="SANY heavy excavator machine working on a large construction site in Uzbekistan"
           fill
           priority
-          className="object-cover object-center bg-[#1A1A1A]"
+          sizes="100vw"
+          quality={85}
+          className="object-cover object-center"
         />
         {/* Multi-layer overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/70 to-[#1A1A1A]/30" />
@@ -37,7 +39,7 @@ export default function HeroSection({ settings }: { settings?: any }) {
       </div>
 
       {/* Animated Grid Pattern */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" aria-hidden="true">
         <svg width="100%" height="100%">
           <defs>
             <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
@@ -79,7 +81,7 @@ export default function HeroSection({ settings }: { settings?: any }) {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-5xl lg:text-7xl font-heading font-bold text-white leading-tight mb-6"
           >
-            <span className="block mb-2 text-white/90">SANY:</span>
+            <span className="block mb-2 text-white/95">SANY:</span>
             <span className="block">
               <span className="gradient-text-red">{dynamicTitle ? dynamicTitle.split(' ')[0] : t.hero.titlePart1}</span>{' '}
               <span className="text-white/90">{dynamicTitle ? dynamicTitle.split(' ').slice(1).join(' ') : t.hero.titlePart2}</span>
@@ -91,7 +93,7 @@ export default function HeroSection({ settings }: { settings?: any }) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg sm:text-xl text-white/50 max-w-xl mb-10 leading-relaxed"
+            className="text-lg sm:text-xl text-white/70 max-w-xl mb-10 leading-relaxed"
           >
             {dynamicDesc || t.hero.description}
           </motion.p>
@@ -132,8 +134,8 @@ export default function HeroSection({ settings }: { settings?: any }) {
           transition={{ duration: 2, repeat: Infinity }}
           className="flex flex-col items-center gap-2"
         >
-          <span className="text-white/30 text-xs uppercase tracking-wider">{t.hero.scrollDown || 'Scroll Down'}</span>
-          <svg className="w-5 h-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span className="text-white/60 text-xs uppercase tracking-wider font-medium">{t.hero.scrollDown || 'Scroll Down'}</span>
+          <svg className="w-5 h-5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </motion.div>
