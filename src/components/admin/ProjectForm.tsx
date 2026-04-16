@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { Save, X, Plus } from 'lucide-react';
+import { Save, X, Plus, Copy } from 'lucide-react';
 import Link from 'next/link';
 import ImageUpload from './ImageUpload';
+import { useToast } from './ToastProvider';
 
 export default function ProjectForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -41,6 +43,14 @@ export default function ProjectForm({ initialData }: { initialData?: any }) {
     setMachines(newMachines);
   };
 
+  const copyFromRu = (fieldBase: string, targetLang: 'uz' | 'en') => {
+    const sourceValue = formData[`${fieldBase}_ru` as keyof typeof formData] as string;
+    setFormData(prev => ({
+      ...prev,
+      [`${fieldBase}_${targetLang}`]: sourceValue
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -65,8 +75,9 @@ export default function ProjectForm({ initialData }: { initialData?: any }) {
     setLoading(false);
 
     if (errorResult) {
-      alert('Ошибка: ' + errorResult.message);
+      toast('Ошибка: ' + errorResult.message, 'error');
     } else {
+      toast(initialData?.id ? 'Проект обновлен' : 'Проект создан', 'success');
       router.push('/admin/projects');
       router.refresh();
     }
@@ -80,7 +91,12 @@ export default function ProjectForm({ initialData }: { initialData?: any }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 col-span-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Название проекта (UZ) *</label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Название проекта (UZ) *</label>
+                <button type="button" onClick={() => copyFromRu('title', 'uz')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                  <Copy className="w-2.5 h-2.5"/> nusxa (RU)
+                </button>
+              </div>
               <input required type="text" name="title_uz" value={formData.title_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Узбекистон темир йулlari" />
             </div>
             <div>
@@ -88,13 +104,23 @@ export default function ProjectForm({ initialData }: { initialData?: any }) {
               <input required type="text" name="title_ru" value={formData.title_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Узбекистон темир йуллари" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Project Title (EN) *</label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Project Title (EN) *</label>
+                <button type="button" onClick={() => copyFromRu('title', 'en')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                  <Copy className="w-2.5 h-2.5"/> copy (RU)
+                </button>
+              </div>
               <input required type="text" name="title_en" value={formData.title_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Uzbekistan Railways" />
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 col-span-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Локация (UZ) *</label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Локация (UZ) *</label>
+                <button type="button" onClick={() => copyFromRu('location', 'uz')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                  <Copy className="w-2.5 h-2.5"/> nusxa (RU)
+                </button>
+              </div>
               <input required type="text" name="location_uz" value={formData.location_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Toshkent viloyati" />
             </div>
             <div>
@@ -102,22 +128,60 @@ export default function ProjectForm({ initialData }: { initialData?: any }) {
               <input required type="text" name="location_ru" value={formData.location_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Ташкентская область" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Location (EN) *</label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Location (EN) *</label>
+                <button type="button" onClick={() => copyFromRu('location', 'en')} className="text-[10px] text-sany-red flex items-center gap-1 hover:underline">
+                  <Copy className="w-2.5 h-2.5"/> copy (RU)
+                </button>
+              </div>
               <input required type="text" name="location_en" value={formData.location_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Tashkent region" />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 col-span-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 col-span-2">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Kategoriya (UZ)</label>
-              <input required type="text" name="category_uz" value={formData.category_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
+              <label className="block text-sm font-medium text-gray-700 mb-2">Категория проекта *</label>
+              <select 
+                required 
+                name="category_ru" 
+                value={formData.category_ru} 
+                onChange={(e) => {
+                  const val = e.target.value;
+                  const selected = [
+                    { ru: 'Строительство', uz: 'Qurilish', en: 'Construction' },
+                    { ru: 'Горнодобывающая промышленность', uz: 'Tog\'-kon sanoati', en: 'Mining Industry' },
+                    { ru: 'Дорожное строительство', uz: 'Yo\'l qurilishi', en: 'Road Construction' },
+                    { ru: 'Промышленность', uz: 'Sanoat', en: 'Industry' },
+                    { ru: 'Другое', uz: 'Boshqa', en: 'Other' }
+                  ].find(c => c.ru === val);
+
+                  if (selected) {
+                    setFormData(prev => ({
+                      ...prev,
+                      category_ru: selected.ru,
+                      category_uz: selected.uz,
+                      category_en: selected.en
+                    }));
+                  }
+                }} 
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none bg-white"
+              >
+                <option value="">Выберите категорию</option>
+                <option value="Строительство">Строительство</option>
+                <option value="Горнодобывающая промышленность">Горнодобывающая промышленность</option>
+                <option value="Дорожное строительство">Дорожное строительство</option>
+                <option value="Промышленность">Промышленность</option>
+                <option value="Другое">Другое</option>
+              </select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Категория (RU)</label>
-              <input required type="text" name="category_ru" value={formData.category_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category (EN)</label>
-              <input required type="text" name="category_en" value={formData.category_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" />
+            <div className="grid grid-cols-2 gap-4">
+               <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">Uzbekcha</label>
+                  <input disabled value={formData.category_uz} className="w-full px-4 py-3 rounded-lg border border-gray-100 bg-gray-50 text-gray-400" />
+               </div>
+               <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">English</label>
+                  <input disabled value={formData.category_en} className="w-full px-4 py-3 rounded-lg border border-gray-100 bg-gray-50 text-gray-400" />
+               </div>
             </div>
           </div>
           <div className="md:col-span-2">
@@ -130,7 +194,12 @@ export default function ProjectForm({ initialData }: { initialData?: any }) {
           </div>
           <div className="md:col-span-2 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Описание (UZ)</label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Описание (UZ)</label>
+                <button type="button" onClick={() => copyFromRu('description', 'uz')} className="text-xs text-sany-red flex items-center gap-1 hover:underline">
+                  <Copy className="w-3 h-3"/> nusxa olish (RU dan)
+                </button>
+              </div>
               <textarea required rows={3} name="description_uz" value={formData.description_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
             <div>
@@ -138,7 +207,12 @@ export default function ProjectForm({ initialData }: { initialData?: any }) {
               <textarea required rows={3} name="description_ru" value={formData.description_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Description (EN)</label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">Description (EN)</label>
+                <button type="button" onClick={() => copyFromRu('description', 'en')} className="text-xs text-sany-red flex items-center gap-1 hover:underline">
+                  <Copy className="w-3 h-3"/> copy from RU
+                </button>
+              </div>
               <textarea required rows={3} name="description_en" value={formData.description_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
           </div>
