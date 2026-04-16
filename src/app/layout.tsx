@@ -94,6 +94,7 @@ export const metadata: Metadata = {
 };
 
 import { createClient } from "@/lib/supabase/server";
+import { headers } from 'next/headers';
 
 export default async function RootLayout({
   children,
@@ -102,6 +103,10 @@ export default async function RootLayout({
 }>) {
   const supabase = await createClient();
   const { data: settings } = await supabase.from('settings').select('*').maybeSingle();
+  
+  const headersList = await headers();
+  const host = headersList.get('host') || "";
+  const isAdminSubdomain = host.startsWith('admin.');
 
   return (
     <html
@@ -151,7 +156,7 @@ export default async function RootLayout({
             defaultTheme="system"
             enableSystem
           >
-            <AppShell settings={settings}>{children}</AppShell>
+            <AppShell settings={settings} isAdminSubdomain={isAdminSubdomain}>{children}</AppShell>
           </ThemeProvider>
         </LanguageProvider>
       </body>
