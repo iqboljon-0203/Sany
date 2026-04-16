@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { formatPrice } from '@/data/products';
@@ -242,48 +242,83 @@ export default function ProductDetailClient({ product, related }: ProductDetailC
 
             {/* Inquiry Form */}
             <div id="inquiry">
-              <div className="bg-anthracite rounded-xl p-8 sticky top-[100px]">
-                <h3 className="font-heading font-bold text-xl text-white mb-2">
-                  Запрос по {product.name}
-                </h3>
-                <p className="text-white/40 text-sm mb-6">
-                  Оставьте заявку и наш менеджер свяжется с вами
-                </p>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <input
-                    type="text"
-                    placeholder="Ваше имя"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="form-input"
-                    required
-                  />
-                  <input
-                    type="tel"
-                    placeholder="+998 __ ___ __ __"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="form-input"
-                    required
-                  />
-                  <textarea
-                    placeholder="Ваш вопрос или комментарий"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    rows={3}
-                    className="form-input resize-none"
-                  />
-                  <button
-                    type="submit"
-                    disabled={formStatus === 'loading'}
-                    className="btn-primary w-full justify-center disabled:opacity-50"
-                  >
-                    {formStatus === 'loading' && '...'}
-                    {formStatus === 'success' && '✓'}
-                    {formStatus === 'error' && '!'}
-                    {formStatus === 'idle' && t.products.inquiryTitle}
-                  </button>
-                </form>
+              <div className="bg-anthracite rounded-2xl p-8 sticky top-[100px] shadow-2xl border border-white/5 min-h-[460px] flex flex-col justify-center">
+                <AnimatePresence mode="wait">
+                  {formStatus === 'success' ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="text-center"
+                    >
+                      <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <h3 className="text-2xl font-heading font-bold text-white mb-3">
+                        {locale === 'ru' ? 'Спасибо!' : 'Rahmat!'}
+                      </h3>
+                      <p className="text-white/60">
+                        {locale === 'ru' ? 'Ваша заявка по ' + product.name + ' принята. Мы свяжемся с вами.' : product.name + ' bo\'yicha arizangiz qabul qilindi.'}
+                      </p>
+                      <button 
+                        onClick={() => setFormStatus('idle')}
+                        className="mt-8 text-sany-red font-bold text-sm hover:underline"
+                      >
+                        {locale === 'ru' ? 'Отправить еще раз' : 'Yana yuborish'}
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      <h3 className="font-heading font-bold text-xl text-white mb-2">
+                        Запрос по {product.name}
+                      </h3>
+                      <p className="text-white/40 text-sm mb-6">
+                        Оставьте заявку и наш менеджер свяжется с вами
+                      </p>
+                      <form onSubmit={handleSubmit} className="space-y-4">
+                        <input
+                          type="text"
+                          placeholder={locale === 'ru' ? 'Ваше имя' : 'Ismingiz'}
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="form-input"
+                          required
+                        />
+                        <input
+                          type="tel"
+                          placeholder="+998 __ ___ __ __"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="form-input"
+                          required
+                        />
+                        <textarea
+                          placeholder={locale === 'ru' ? 'Ваш вопрос или комментарий' : 'Savolingiz...'}
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          rows={3}
+                          className="form-input resize-none"
+                        />
+                        <button
+                          type="submit"
+                          disabled={formStatus === 'loading'}
+                          className="btn-primary w-full justify-center !py-4 disabled:opacity-50"
+                        >
+                          {formStatus === 'loading' ? (
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          ) : t.products.inquiryTitle}
+                        </button>
+                        {formStatus === 'error' && (
+                          <p className="text-xs text-red-400 mt-2 text-center font-medium">
+                            {locale === 'ru' ? 'Проверьте номер телефона (мин. 9 цифр)' : 'Telefon raqamini tekshiring (min. 9 raqam)'}
+                          </p>
+                        )}
+                      </form>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>

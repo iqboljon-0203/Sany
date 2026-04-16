@@ -21,10 +21,25 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
   useEffect(() => {
     async function fetchCats() {
       const { data } = await supabase.from('product_categories').select('*').order('order_index', { ascending: true });
-      if (data) setCategories(data);
+      if (data) {
+        setCategories(data);
+        // If adding new product, set initial labels from default "excavator" category
+        if (!initialData) {
+          const defaultCat = data.find(c => c.slug === 'excavator') || data[0];
+          if (defaultCat) {
+            setFormData(prev => ({
+              ...prev,
+              category: defaultCat.slug,
+              category_label_uz: defaultCat.name_uz,
+              category_label_ru: defaultCat.name_ru,
+              category_label_en: defaultCat.name_en,
+            }));
+          }
+        }
+      }
     }
     fetchCats();
-  }, []);
+  }, [initialData]);
   
   const [formData, setFormData] = useState({
     name: initialData?.name || '',
@@ -119,6 +134,9 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
     const productPayload = {
       ...formData,
+      category_label: formData.category_label_ru, 
+      short_description: formData.short_description_ru,
+      description: formData.description_ru,
       price: formData.price ? Number(formData.price) : null,
       specs: specs.filter(s => s.label && s.value), // Remove empty specs
       images: images.filter(i => i.trim() !== ''), // Remove empty image lines
