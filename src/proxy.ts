@@ -7,8 +7,8 @@ export async function proxy(request: NextRequest) {
 
   // Logic for admin.sanyasia.uz subdomain
   if (hostname === 'admin.sanyasia.uz') {
-    // If path does not start with /admin, rewrite it to /admin/path
-    if (!url.pathname.startsWith('/admin')) {
+    // If path does not start with /admin or /api, rewrite it to /admin/path
+    if (!url.pathname.startsWith('/admin') && !url.pathname.startsWith('/api')) {
       url.pathname = `/admin${url.pathname === '/' ? '' : url.pathname}`;
       return NextResponse.rewrite(url);
     }
