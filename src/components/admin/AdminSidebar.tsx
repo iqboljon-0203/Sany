@@ -16,18 +16,20 @@ import {
   Building2, 
   Banknote, 
   MessageSquare,
+  GripVertical,
   Menu,
   X 
 } from 'lucide-react';
 
-export default function AdminSidebar({ userEmail }: { userEmail?: string }) {
+export default function AdminSidebar({ userEmail, newLeadsCount = 0 }: { userEmail?: string, newLeadsCount?: number }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
   const links = [
     { href: '/admin', icon: LayoutDashboard, label: 'Boshqaruv paneli' },
-    { href: '/admin/leads', icon: MessageSquare, label: 'Arizalar' },
+    { href: '/admin/leads', icon: MessageSquare, label: 'Arizalar', badge: newLeadsCount },
     { href: '/admin/products', icon: Package, label: 'Mahsulotlar' },
+    { href: '/admin/products/categories', icon: GripVertical, label: 'Kategoriyalar' },
     { href: '/admin/projects', icon: FolderGit2, label: 'Loyihalar' },
     { href: '/admin/solutions', icon: Lightbulb, label: 'Yechimlar' },
     { href: '/admin/partners', icon: Handshake, label: 'Hamkorlar' },
@@ -112,14 +114,21 @@ export default function AdminSidebar({ userEmail }: { userEmail?: string }) {
                 key={link.href}
                 href={link.href} 
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${
+                className={`flex items-center justify-between px-4 py-3 rounded-lg transition-colors font-medium ${
                   isActive 
                     ? 'bg-sany-red/5 text-sany-red' 
                     : 'text-gray-700 hover:bg-gray-50 hover:text-sany-red'
                 }`}
               >
-                <Icon className="w-5 h-5" />
-                {link.label}
+                <div className="flex items-center gap-3">
+                  <Icon className="w-5 h-5" />
+                  {link.label}
+                </div>
+                {'badge' in link && Number(link.badge) > 0 && (
+                  <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                    {link.badge}
+                  </span>
+                )}
               </Link>
             );
           })}

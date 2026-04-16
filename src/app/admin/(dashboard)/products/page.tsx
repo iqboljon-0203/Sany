@@ -2,15 +2,29 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { Plus, Edit } from 'lucide-react';
 import DeleteButton from '@/components/admin/DeleteButton';
+import AdminSearchHeader from '@/components/admin/AdminSearchHeader';
+import AdminBreadcrumbs from '@/components/admin/AdminBreadcrumbs';
 
-export const revalidate = 0; // Disable cache so we always see fresh info
+export const revalidate = 0;
 
-export default async function AdminProductsPage() {
+export default async function AdminProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
   const supabase = await createClient();
-  const { data: products, error } = await supabase
+  
+  let query = supabase
     .from('products')
     .select('*')
     .order('created_at', { ascending: false });
+
+  if (q) {
+    query = query.or(`name.ilike.%${q}%,slug.ilike.%${q}%,category_label_ru.ilike.%${q}%`);
+  }
+
+  const { data: products, error } = await query;
 
   if (error) {
     return <div className="text-red-500 p-8">Ma'lumot yuklashda xatolik: {error.message}</div>;
@@ -18,8 +32,12 @@ export default async function AdminProductsPage() {
 
   return (
     <div>
+      <AdminBreadcrumbs items={[{ label: 'Mahsulotlar' }]} />
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-3xl font-heading font-bold text-gray-900">Mahsulotlarni boshqarish</h2>
+        <div>
+          <h2 className="text-3xl font-heading font-bold text-gray-900">Mahsulotlarni boshqarish</h2>
+          <p className="text-gray-500 mt-1">Barcha texnikalar va ularning holati</p>
+        </div>
         <Link 
           href="/admin/products/new" 
           className="flex items-center gap-2 bg-sany-red hover:bg-red-700 text-white font-bold py-2.5 px-5 rounded-lg transition-colors"
@@ -28,6 +46,8 @@ export default async function AdminProductsPage() {
           Texnika qo'shish
         </Link>
       </div>
+
+      <AdminSearchHeader placeholder="Model nomi yoki kategoriya bo'yicha qidirish..." />
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
@@ -49,7 +69,7 @@ export default async function AdminProductsPage() {
                     <div className="text-sm text-gray-500">{product.slug}</div>
                   </td>
                   <td className="py-4 px-6 text-sm text-gray-700">
-                    {product.category_label}
+                    {product.category_label_ru || product.category_label}
                   </td>
                   <td className="py-4 px-6 text-sm font-medium text-gray-900">
                     {product.price ? product.price.toLocaleString('uz-UZ') : 'Kiritilmagan'}
@@ -70,7 +90,6 @@ export default async function AdminProductsPage() {
                       <Link 
                         href={`/admin/products/${product.id}/edit`} 
                         className="text-blue-500 hover:text-blue-700 p-2 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="В разработке"
                       >
                         <Edit className="w-5 h-5" />
                       </Link>
@@ -82,8 +101,8 @@ export default async function AdminProductsPage() {
               
               {products?.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-gray-500">
-                    Ma'lumotlar bazasi bo'sh. Birinchi mahsulotni qo'shing.
+                  <td colSpan={5} className="py-12 text-center text-gray-400 italic">
+                    {q ? "Qidiruv bo'yicha mahsulot topilmadi" : "Ma'lumotlar bazasi bo'sh. Birinchi mahsulotni qo'shing."}
                   </td>
                 </tr>
               )}

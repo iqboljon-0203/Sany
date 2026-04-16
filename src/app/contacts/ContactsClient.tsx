@@ -150,64 +150,99 @@ export default function ContactsClient({ settings }: { settings: any }) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <div className="bg-card-bg rounded-2xl shadow-lg p-10 border border-border-color">
-                <h2 className="text-2xl font-heading font-bold text-foreground mb-6">
-                  {t.contacts.formTitle}
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label className="text-sm text-foreground/70 font-medium mb-2 block">{isRu ? 'Имя' : 'Ismingiz'} *</label>
-                    <input
-                      type="text"
-                      placeholder={isRu ? 'Имя' : 'Ismingiz'}
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="form-input-light"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-foreground/70 font-medium mb-2 block">{isRu ? 'Телефон' : 'Telefon'} *</label>
-                    <input
-                      type="tel"
-                      placeholder="+998 __ ___ __ __"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="form-input-light"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-foreground/70 font-medium mb-2 block">{isRu ? 'Интересующая техника' : 'Texnika'}</label>
-                    <input
-                      type="text"
-                      placeholder={isRu ? 'Например: SY215C' : 'Masalan: SY215C'}
-                      value={machineInterest}
-                      onChange={(e) => setMachineInterest(e.target.value)}
-                      className="form-input-light"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-foreground/70 font-medium mb-2 block">{isRu ? 'Сообщение' : 'Xabar'}</label>
-                    <textarea
-                      placeholder={isRu ? 'Ваше сообщение...' : 'Xabaringiz...'}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      rows={4}
-                      className="form-input-light resize-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={formStatus === 'loading'}
-                    className="btn-primary w-full justify-center !py-4 disabled:opacity-50"
-                  >
-                    {formStatus === 'loading' && '...'}
-                    {formStatus === 'success' && '✓'}
-                    {formStatus === 'error' && '!'}
-                    {formStatus === 'idle' && t.contacts.submit}
-                  </button>
-                </form>
+              <div className="bg-card-bg rounded-2xl shadow-lg p-10 border border-border-color min-h-[500px] flex flex-col justify-center">
+                <AnimatePresence mode="wait">
+                  {formStatus === 'success' ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="text-center"
+                    >
+                      <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <h3 className="text-2xl font-heading font-bold text-foreground mb-3">
+                        {isRu ? 'Спасибо!' : 'Rahmat!'}
+                      </h3>
+                      <p className="text-text-muted">
+                        {isRu ? 'Ваша заявка принята. Мы свяжемся с вами в ближайшее время.' : 'Sizning arizangiz qabul qilindi. Tez orada siz bilan bog\'lanamiz.'}
+                      </p>
+                      <button 
+                        onClick={() => setFormStatus('idle')}
+                        className="mt-8 text-sany-red font-bold text-sm hover:underline"
+                      >
+                        {isRu ? 'Отправить еще раз' : 'Yana yuborish'}
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                      <h2 className="text-2xl font-heading font-bold text-foreground mb-6">
+                        {t.contacts.formTitle}
+                      </h2>
+                      <form onSubmit={handleSubmit} className="space-y-5">
+                        <div>
+                          <label className="text-sm text-foreground/70 font-medium mb-2 block">{isRu ? 'Имя' : 'Ismingiz'} *</label>
+                          <input
+                            type="text"
+                            placeholder={isRu ? 'Имя' : 'Ismingiz'}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="form-input-light"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm text-foreground/70 font-medium mb-2 block">{isRu ? 'Телефон' : 'Telefon'} *</label>
+                          <input
+                            type="tel"
+                            placeholder="+998 __ ___ __ __"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            className="form-input-light"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm text-foreground/70 font-medium mb-2 block">{isRu ? 'Интересующая техника' : 'Texnika'}</label>
+                          <input
+                            type="text"
+                            placeholder={isRu ? 'Например: SY215C' : 'Masalan: SY215C'}
+                            value={machineInterest}
+                            onChange={(e) => setMachineInterest(e.target.value)}
+                            className="form-input-light"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm text-foreground/70 font-medium mb-2 block">{isRu ? 'Сообщение' : 'Xabar'}</label>
+                          <textarea
+                            placeholder={isRu ? 'Ваше сообщение...' : 'Xabaringiz...'}
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            rows={4}
+                            className="form-input-light resize-none"
+                          />
+                        </div>
+                        <button
+                          type="submit"
+                          disabled={formStatus === 'loading'}
+                          className="btn-primary w-full justify-center !py-4 disabled:opacity-50"
+                        >
+                          {formStatus === 'loading' ? (
+                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          ) : t.contacts.submit}
+                        </button>
+                        {formStatus === 'error' && (
+                          <p className="text-xs text-red-500 mt-2 text-center font-medium">
+                            {isRu ? 'Произошла ошибка. Попробуйте позже.' : 'Xatolik yuz berdi. Keyinroq urinib ko\'ring.'}
+                          </p>
+                        )}
+                      </form>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           </div>

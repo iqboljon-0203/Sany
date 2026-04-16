@@ -4,6 +4,7 @@ import "./globals.css";
 import AppShell from "@/components/AppShell";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/lib/i18n";
+import Script from "next/script";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -116,40 +117,43 @@ export default async function RootLayout({
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
         {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-XXXXXXXXXX');
-            `,
-          }}
-        />
-        <script
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} strategy="afterInteractive" />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
+        <Script
+          id="structured-data"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "SANY Uzbekistan",
-              "alternateName": "SANY AUTOMOBILE MANUFACTURING CENTRAL ASIA",
-              "url": "https://sanyasia.uz",
-              "logo": "https://sanyasia.uz/favicon.svg",
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": settings?.phone_sales || "+998-91-772-72-73",
-                "contactType": "sales",
-                "areaServed": "UZ",
-                "availableLanguage": ["Uzbek", "Russian", "English"]
-              },
-              "sameAs": [
-                settings?.telegram_url || "https://t.me/SANY_TAJIBAEVA"
-              ]
-            }),
-          }}
-        />
+          strategy="afterInteractive"
+        >
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "SANY Uzbekistan",
+            "alternateName": "SANY AUTOMOBILE MANUFACTURING CENTRAL ASIA",
+            "url": "https://sanyasia.uz",
+            "logo": "https://sanyasia.uz/favicon.svg",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": settings?.phone_sales || "+998-91-772-72-73",
+              "contactType": "sales",
+              "areaServed": "UZ",
+              "availableLanguage": ["Uzbek", "Russian", "English"]
+            },
+            "sameAs": [
+              settings?.telegram_url || "https://t.me/SANY_TAJIBAEVA"
+            ]
+          })}
+        </Script>
         <LanguageProvider>
           <ThemeProvider
             attribute="class"

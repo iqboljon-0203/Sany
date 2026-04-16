@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import ProjectsSection from '@/components/ProjectsSection';
 import PartnersMarquee from '@/components/PartnersMarquee';
 import { createClient } from '@/lib/supabase/server';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const revalidate = 0; // Disable cache so frontend always has fresh admin data
 
@@ -40,7 +41,8 @@ export default async function ProjectsPage() {
   }));
 
   return (
-    <div className="pt-[82px]">
+    <div className="pt-[82px] min-h-screen bg-light-grey">
+      <Breadcrumbs items={[{ label: 'Top loyihalar' }]} />
       <ProjectsSection projectsList={mappedProjects} />
       <PartnersMarquee partnersList={partners || []} />
     </div>

@@ -3,15 +3,18 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { Save, X, Plus } from 'lucide-react';
+import { Save, X, Plus, GripVertical, Settings } from 'lucide-react';
 import Link from 'next/link';
 import ImageUpload from './ImageUpload';
+import { slugify } from '@/lib/slugify';
+import { useToast } from './ToastProvider';
 
 type Spec = { label: string; value: string; unit: string };
 
 export default function ProductForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
 
@@ -58,6 +61,11 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
         [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
       };
 
+      // Auto-generate slug from name
+      if (name === 'name') {
+        updated.slug = slugify(value);
+      }
+
       // Auto-set labels when category changes
       if (name === 'category') {
         const selected = categories.find(c => c.slug === value);
@@ -72,16 +80,21 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
     });
   };
 
+  const copyFromRu = (fieldBase: string, targetLang: 'uz' | 'en') => {
+    const sourceValue = formData[`${fieldBase}_ru` as keyof typeof formData] as string;
+    setFormData(prev => ({
+      ...prev,
+      [`${fieldBase}_${targetLang}`]: sourceValue
+    }));
+  };
+
   const handleTranslate = async (fieldBase: string) => {
     const sourceText = formData[`${fieldBase}_ru` as keyof typeof formData] as string;
     if (!sourceText) return;
     
     setLoading(true);
     try {
-      // Simulate/Proxy translation (In real case, call /api/translate)
-      // For now, I'll just suggest translations using a placeholder text or actual logic if I can.
-      // Since I don't have a reliable free API without CORS issues here, 
-      // I'll just show an alert that this feature is being connected or use a simple mock.
+      // Simulate/Proxy translation
       alert('Avto-tarjima tayyorlanmoqda... (Haqiqiy loyihada Google/DeepL API ulanadi)');
     } finally {
       setLoading(false);
@@ -126,8 +139,9 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
     setLoading(false);
 
     if (errorResult) {
-      alert('Ошибка: ' + errorResult.message);
+      toast('Ошибка: ' + errorResult.message, 'error');
     } else {
+      toast(initialData?.id ? 'Mahsulot yangilandi!' : 'Yangi mahsulot qo\'shildi!');
       router.push('/admin/products');
       router.refresh();
     }
@@ -137,47 +151,69 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Basic Information */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Основная информация</h3>
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-xl font-bold text-gray-900">Основная информация</h3>
+          <Link href="/admin/products/categories" className="text-sm text-sany-red hover:underline flex items-center gap-1">
+            <Settings className="w-4 h-4" /> Управление категориями
+          </Link>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
+          <div className="col-span-1 md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">Название модели *</label>
-            <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Например: SY215C" />
+            <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none shadow-sm" placeholder="Например: SY215C" />
+            <div className="text-[11px] text-gray-400 mt-1">Slug: {formData.slug}</div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Слаг (URL ссылка) *</label>
-            <input required type="text" name="slug" value={formData.slug} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="sy215c" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Системная категория</label>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Системная категория</label>
-            <select name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none">
-              <option value="">Выберите категорию...</option>
-              {categories.map(c => (
-                <option key={c.id} value={c.slug}>{c.name_ru}</option>
-              ))}
-            </select>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 col-span-2">
+
+          <div className="col-span-1 md:col-span-2 p-4 bg-gray-50 rounded-xl border border-gray-100 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Kategoriya nomi (UZ) *</label>
-              <input required type="text" name="category_label_uz" value={formData.category_label_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Gusenitsali ekskavator" />
+              <label className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2">
+                <GripVertical className="w-4 h-4 text-sany-red" />
+                Системная категория
+              </label>
+              <select 
+                name="category" 
+                value={formData.category} 
+                onChange={handleChange} 
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none bg-white shadow-sm"
+              >
+                <option value="">Выберите системную категорию...</option>
+                {categories.map(c => (
+                  <option key={c.id} value={c.slug}>{c.name_ru}</option>
+                ))}
+              </select>
+              <p className="text-[11px] text-gray-500 mt-2 italic">Выбор категории автоматически заполнит поля ниже, но вы можете их изменить индивидуально для этого товара.</p>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Название категории (RU) *</label>
-              <input required type="text" name="category_label_ru" value={formData.category_label_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Гусеничный экскаватор" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category Name (EN) *</label>
-              <input required type="text" name="category_label_en" value={formData.category_label_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Crawler Excavator" />
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <div className="flex justify-between items-end mb-1">
+                  <label className="block text-xs font-bold text-gray-500 uppercase">Kategoriya nomi (UZ) *</label>
+                  <button type="button" onClick={() => copyFromRu('category_label', 'uz')} className="text-[10px] text-blue-500 hover:underline">RU dan nusxa</button>
+                </div>
+                <input required type="text" name="category_label_uz" value={formData.category_label_uz} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none bg-white font-montserrat" placeholder="Gusenitsali ekskavator" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Название категории (RU) *</label>
+                <input required type="text" name="category_label_ru" value={formData.category_label_ru} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none bg-white font-montserrat" placeholder="Гусеничный экскаватор" />
+              </div>
+              <div>
+                <div className="flex justify-between items-end mb-1">
+                  <label className="block text-xs font-bold text-gray-500 uppercase">Category Name (EN) *</label>
+                  <button type="button" onClick={() => copyFromRu('category_label', 'en')} className="text-[10px] text-blue-500 hover:underline">RU dan nusxa</button>
+                </div>
+                <input required type="text" name="category_label_en" value={formData.category_label_en} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none bg-white font-montserrat" placeholder="Crawler Excavator" />
+              </div>
             </div>
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Цена (в сумах)</label>
-            <input type="number" name="price" value={formData.price} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none" placeholder="Например: 1250000000" />
+            <input type="number" name="price" value={formData.price} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none shadow-sm" placeholder="Например: 1250000000" />
           </div>
-          <div className="flex items-center mt-8">
-            <input type="checkbox" id="featured" name="featured" checked={formData.featured} onChange={handleChange} className="w-5 h-5 text-sany-red focus:ring-sany-red border-gray-300 rounded" />
-            <label htmlFor="featured" className="ml-3 text-sm font-medium text-gray-700">Топ товар (Вывесить на главную)</label>
+          <div className="flex items-center mt-8 p-3 bg-red-50 rounded-lg border border-red-100">
+            <input type="checkbox" id="featured" name="featured" checked={formData.featured} onChange={handleChange} className="w-5 h-5 text-sany-red focus:ring-sany-red border-gray-300 rounded cursor-pointer" />
+            <label htmlFor="featured" className="ml-3 text-sm font-bold text-gray-700 cursor-pointer">Топ товар (Вывесить на главную)</label>
           </div>
         </div>
       </div>
@@ -186,9 +222,12 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <h3 className="text-xl font-bold text-gray-900 mb-6">Описания</h3>
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-montserrat">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Kratkoe opisanie (UZ)</label>
+              <div className="flex justify-between items-end mb-2">
+                <label className="block text-sm font-medium text-gray-700">Kratkoe opisanie (UZ)</label>
+                <button type="button" onClick={() => copyFromRu('short_description', 'uz')} className="text-[10px] text-blue-500 hover:underline">RU dan nusxa</button>
+              </div>
               <textarea required rows={2} name="short_description_uz" value={formData.short_description_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
             <div>
@@ -196,13 +235,19 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <textarea required rows={2} name="short_description_ru" value={formData.short_description_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Short Description (EN)</label>
+              <div className="flex justify-between items-end mb-2">
+                <label className="block text-sm font-medium text-gray-700">Short Description (EN)</label>
+                <button type="button" onClick={() => copyFromRu('short_description', 'en')} className="text-[10px] text-blue-500 hover:underline">RU dan nusxa</button>
+              </div>
               <textarea required rows={2} name="short_description_en" value={formData.short_description_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4 font-montserrat">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">To'liq tavsif (UZ)</label>
+              <div className="flex justify-between items-end mb-2">
+                <label className="block text-sm font-medium text-gray-700">To'liq tavsif (UZ)</label>
+                <button type="button" onClick={() => copyFromRu('description', 'uz')} className="text-[10px] text-blue-500 hover:underline">RU dan nusxa</button>
+              </div>
               <textarea required rows={4} name="description_uz" value={formData.description_uz} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
             <div>
@@ -210,7 +255,10 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
               <textarea required rows={4} name="description_ru" value={formData.description_ru} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Full Description (EN)</label>
+              <div className="flex justify-between items-end mb-2">
+                <label className="block text-sm font-medium text-gray-700">Full Description (EN)</label>
+                <button type="button" onClick={() => copyFromRu('description', 'en')} className="text-[10px] text-blue-500 hover:underline">RU dan nusxa</button>
+              </div>
               <textarea required rows={4} name="description_en" value={formData.description_en} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sany-red outline-none"></textarea>
             </div>
           </div>

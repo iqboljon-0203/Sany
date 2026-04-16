@@ -6,6 +6,7 @@ import Link from 'next/link';
 import type { ProductCategory } from '@/types';
 import { useTranslation } from '@/lib/i18n';
 import NextImage from 'next/image';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 // Static categories fallback
 export default function ProductsClient({ initialProducts }: { initialProducts: any[] }) {
@@ -69,6 +70,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: a
 
   return (
     <div className="pt-[82px] min-h-screen bg-light-grey">
+      <Breadcrumbs items={[{ label: t.nav.products }]} />
       {/* Page Header */}
       <div className="bg-background py-16 relative overflow-hidden border-b border-border-color">
         <div className="absolute inset-0 opacity-[0.03]">

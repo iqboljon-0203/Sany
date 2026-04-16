@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
-import { Package, FolderGit2, Handshake } from 'lucide-react';
+import { Package, FolderGit2, Handshake, MessageSquare } from 'lucide-react';
 import VisitorChart from '@/components/admin/VisitorChart';
+import AdminBreadcrumbs from '@/components/admin/AdminBreadcrumbs';
 
 export const revalidate = 0; // Disable cache so numbers are always fresh
 
@@ -11,6 +12,7 @@ export default async function AdminDashboardPage() {
   const { count: productsCount } = await supabase.from('products').select('*', { count: 'exact', head: true });
   const { count: projectsCount } = await supabase.from('projects').select('*', { count: 'exact', head: true });
   const { count: partnersCount } = await supabase.from('partners').select('*', { count: 'exact', head: true });
+  const { count: leadsCount } = await supabase.from('leads').select('*', { count: 'exact', head: true });
   
   // Fetch recently added leads
   const { data: recentLeads } = await supabase
@@ -21,16 +23,27 @@ export default async function AdminDashboardPage() {
   
   return (
     <div>
+      <AdminBreadcrumbs items={[]} />
       <h2 className="text-3xl font-heading font-bold text-gray-900 mb-8">Boshqaruv paneli</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
           <div className="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
             <Package className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Texnika soni</p>
+            <p className="text-sm text-gray-500 font-medium">Mahsulotlar</p>
             <p className="text-2xl font-bold text-gray-900">{productsCount || 0}</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+          <div className="w-14 h-14 rounded-full bg-red-50 text-sany-red flex items-center justify-center shrink-0">
+            <MessageSquare className="w-6 h-6" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 font-medium">Arizalar</p>
+            <p className="text-2xl font-bold text-gray-900">{leadsCount || 0}</p>
           </div>
         </div>
 

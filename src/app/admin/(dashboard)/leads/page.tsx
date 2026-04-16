@@ -1,22 +1,46 @@
 import { createClient } from '@/lib/supabase/server';
-import { Mail, Phone, Clock, CheckCircle, Circle } from 'lucide-react';
+import { Phone, CheckCircle, Circle } from 'lucide-react';
 import LeadStatusButton from '@/components/admin/LeadStatusButton';
+import AdminSearchHeader from '@/components/admin/AdminSearchHeader';
+import AdminBreadcrumbs from '@/components/admin/AdminBreadcrumbs';
 
 export const revalidate = 0;
 
-export default async function AdminLeadsPage() {
+export default async function AdminLeadsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; status?: string }>;
+}) {
+  const { q, status } = await searchParams;
   const supabase = await createClient();
-  const { data: leads } = await supabase
+  
+  let query = supabase
     .from('leads')
     .select('*')
     .order('created_at', { ascending: false });
 
+  if (q) {
+    query = query.or(`name.ilike.%${q}%,phone.ilike.%${q}%,message.ilike.%${q}%,product.ilike.%${q}%`);
+  }
+
+  if (status) {
+    query = query.eq('status', status);
+  }
+
+  const { data: leads } = await query;
+
   return (
     <div>
+      <AdminBreadcrumbs items={[{ label: 'Arizalar' }]} />
       <div className="mb-8">
         <h2 className="text-3xl font-heading font-bold text-gray-900">Arizalar</h2>
         <p className="text-gray-500 mt-1">Mijozlardan kelgan barcha murojaatlar</p>
       </div>
+
+      <AdminSearchHeader 
+        placeholder="Mijoz ismi, telefoni yoki xabari..." 
+        statuses={['Новый', 'В обработке', 'Завершено', 'Отменено']}
+      />
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <table className="w-full">
@@ -57,7 +81,9 @@ export default async function AdminLeadsPage() {
           </tbody>
         </table>
         {(!leads || leads.length === 0) && (
-          <div className="text-center py-20 text-gray-400">Hali arizalar yo'q</div>
+          <div className="text-center py-20 text-gray-400">
+            {q || status ? "Qidiruv bo'yicha ma'lumot topilmadi" : "Hali arizalar yo'q"}
+          </div>
         )}
       </div>
     </div>
