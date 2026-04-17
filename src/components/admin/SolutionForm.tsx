@@ -50,8 +50,6 @@ export default function SolutionForm({ initialData }: { initialData?: any }) {
 
     const payload = {
       ...formData,
-      title: formData.title_ru,
-      desc: formData.desc_ru,
       features_uz: featuresUz.filter(f => f.trim() !== ''),
       features_ru: featuresRu.filter(f => f.trim() !== ''),
       features_en: featuresEn.filter(f => f.trim() !== ''),

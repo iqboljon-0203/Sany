@@ -55,8 +55,6 @@ export default function ServiceForm({ initialData }: { initialData?: any }) {
 
     const payload = {
       ...formData,
-      title: formData.title_ru,
-      desc: formData.desc_ru,
     };
 
     let errorResult;

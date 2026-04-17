@@ -134,9 +134,6 @@ export default function ProductForm({ initialData }: { initialData?: any }) {
 
     const productPayload = {
       ...formData,
-      category_label: formData.category_label_ru, 
-      short_description: formData.short_description_ru,
-      description: formData.description_ru,
       price: formData.price ? Number(formData.price) : null,
       specs: specs.filter(s => s.label && s.value), // Remove empty specs
       images: images.filter(i => i.trim() !== ''), // Remove empty image lines

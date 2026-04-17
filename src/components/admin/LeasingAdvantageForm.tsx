@@ -40,7 +40,6 @@ export default function LeasingAdvantageForm({ initialData }: { initialData?: an
 
     const payload = {
       ...formData,
-      title: formData.title_ru,
     };
 
     let errorResult;
