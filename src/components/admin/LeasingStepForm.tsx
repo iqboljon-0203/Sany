@@ -41,12 +41,18 @@ export default function LeasingStepForm({ initialData }: { initialData?: any }) 
     e.preventDefault();
     setLoading(true);
 
+    const payload = {
+      ...formData,
+      title: formData.title_ru,
+      desc: formData.desc_ru,
+    };
+
     let errorResult;
     if (initialData?.id) {
-      const { error } = await supabase.from('leasing_steps').update(formData).eq('id', initialData.id);
+      const { error } = await supabase.from('leasing_steps').update(payload).eq('id', initialData.id);
       errorResult = error;
     } else {
-      const { error } = await supabase.from('leasing_steps').insert([formData]);
+      const { error } = await supabase.from('leasing_steps').insert([payload]);
       errorResult = error;
     }
 

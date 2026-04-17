@@ -49,12 +49,18 @@ export default function AdvantageForm({ initialData }: { initialData?: any }) {
     e.preventDefault();
     setLoading(true);
 
+    const payload = {
+      ...formData,
+      title: formData.title_ru,
+      desc: formData.desc_ru,
+    };
+    
     let errorResult;
     if (initialData?.id) {
-      const { error } = await supabase.from('advantages').update(formData).eq('id', initialData.id);
+      const { error } = await supabase.from('advantages').update(payload).eq('id', initialData.id);
       errorResult = error;
     } else {
-      const { error } = await supabase.from('advantages').insert([formData]);
+      const { error } = await supabase.from('advantages').insert([payload]);
       errorResult = error;
     }
 

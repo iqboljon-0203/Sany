@@ -38,12 +38,17 @@ export default function LeasingAdvantageForm({ initialData }: { initialData?: an
     e.preventDefault();
     setLoading(true);
 
+    const payload = {
+      ...formData,
+      title: formData.title_ru,
+    };
+
     let errorResult;
     if (initialData?.id) {
-      const { error } = await supabase.from('leasing_advantages').update(formData).eq('id', initialData.id);
+      const { error } = await supabase.from('leasing_advantages').update(payload).eq('id', initialData.id);
       errorResult = error;
     } else {
-      const { error } = await supabase.from('leasing_advantages').insert([formData]);
+      const { error } = await supabase.from('leasing_advantages').insert([payload]);
       errorResult = error;
     }
 

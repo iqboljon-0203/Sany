@@ -53,12 +53,18 @@ export default function ServiceForm({ initialData }: { initialData?: any }) {
     e.preventDefault();
     setLoading(true);
 
+    const payload = {
+      ...formData,
+      title: formData.title_ru,
+      desc: formData.desc_ru,
+    };
+
     let errorResult;
     if (initialData?.id) {
-      const { error } = await supabase.from('services').update(formData).eq('id', initialData.id);
+      const { error } = await supabase.from('services').update(payload).eq('id', initialData.id);
       errorResult = error;
     } else {
-      const { error } = await supabase.from('services').insert([formData]);
+      const { error } = await supabase.from('services').insert([payload]);
       errorResult = error;
     }
 

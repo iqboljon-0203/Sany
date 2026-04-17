@@ -56,9 +56,31 @@ export default function ProjectForm({ initialData }: { initialData?: any }) {
     setLoading(true);
 
     const projectPayload = {
-      ...formData,
-      machines: machines.filter(m => m.trim() !== ''), // Remove empty machines
+      title: formData.title_ru || '',
+      title_uz: formData.title_uz || '',
+      title_ru: formData.title_ru || '',
+      title_en: formData.title_en || '',
+      location: formData.location_ru || '',
+      location_uz: formData.location_uz || '',
+      location_ru: formData.location_ru || '',
+      location_en: formData.location_en || '',
+      category: formData.category_ru || '',
+      category_uz: formData.category_uz || '',
+      category_ru: formData.category_ru || '',
+      category_en: formData.category_en || '',
+      description: formData.description_ru || '',
+      description_uz: formData.description_uz || '',
+      description_ru: formData.description_ru || '',
+      description_en: formData.description_en || '',
+      image: formData.image || '',
+      machines: machines.filter(m => m.trim() !== ''),
     };
+
+    if (!projectPayload.title) {
+      toast('Ошибка: Русское название проекта обязательно к заполнению', 'error');
+      setLoading(false);
+      return;
+    }
 
     let errorResult;
 
