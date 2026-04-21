@@ -45,14 +45,13 @@ export default function AdminSidebar({ userEmail, newLeadsCount = 0 }: { userEma
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50 flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
-           <div className="w-8 h-8 rounded-lg bg-sany-red flex items-center justify-center p-1">
-              <svg viewBox="0 0 100 100" className="text-white fill-current">
-                <path d="M 50,15 L 65,15 L 65,45 L 85,45 L 85,55 L 50,55 Z" transform="rotate(0, 50, 50)" />
-                <path d="M 50,15 L 65,15 L 65,45 L 85,45 L 85,55 L 50,55 Z" transform="rotate(120, 50, 50)" />
-                <path d="M 50,15 L 65,15 L 65,45 L 85,45 L 85,55 L 50,55 Z" transform="rotate(240, 50, 50)" />
-              </svg>
+           <div className="w-8 h-8 flex items-center justify-center">
+              <img src="/logo.svg" alt="SANY" className="w-10 h-10 object-contain" />
            </div>
-           <span className="font-heading font-black text-gray-900 tracking-wider">SANY ADMIN</span>
+           <div className="flex flex-col">
+              <span className="text-base font-black tracking-wider leading-none text-gray-900 font-heading">SANY ADMIN</span>
+              <span className="text-[7px] font-bold tracking-[0.1em] text-gray-500 uppercase font-sans">Central Asia</span>
+           </div>
         </div>
         <button 
           onClick={() => setIsOpen(!isOpen)}
@@ -76,27 +75,12 @@ export default function AdminSidebar({ userEmail, newLeadsCount = 0 }: { userEma
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-6 hidden lg:block">
-          <Link href="/" className="flex items-center group mb-2">
-            <svg viewBox="0 0 200 50" className="h-10 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="admin-sidebar-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#e3000f" />
-                  <stop offset="100%" stopColor="#8d000a" />
-                </linearGradient>
-              </defs>
-              <g>
-                <circle cx="25" cy="25" r="24" fill="url(#admin-sidebar-grad)" />
-                <circle cx="25" cy="25" r="21.5" stroke="white" strokeWidth="0.8" fill="none" opacity="0.6" />
-                <g fill="white" transform="translate(25, 25)">
-                   <path d="M -2,-13 L 2,-13 L 2,2 L 14,2 L 14,6 L -2,6 Z" transform="rotate(0) translate(0, 2)" />
-                   <path d="M -2,-13 L 2,-13 L 2,2 L 14,2 L 14,6 L -2,6 Z" transform="rotate(120) translate(0, 2)" />
-                   <path d="M -2,-13 L 2,-13 L 2,2 L 14,2 L 14,6 L -2,6 Z" transform="rotate(240) translate(0, 2)" />
-                   <path d="M 0,-3 L 3,2 L -3,2 Z" fill="url(#admin-sidebar-grad)" />
-                </g>
-              </g>
-              <text x="60" y="28" fontFamily="'Arial Black', Arial, sans-serif" fontWeight="900" fontSize="24" fill="#000000" letterSpacing="1.5">SANY</text>
-              <text x="62" y="42" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="9.5" fill="#666666" letterSpacing="3">CENTRAL ASIA</text>
-            </svg>
+          <Link href="/" className="flex items-center gap-3 group mb-4">
+            <img src="/logo.svg" alt="SANY Logo" className="h-12 w-auto" />
+            <div className="flex flex-col">
+              <span className="text-xl font-black tracking-wider leading-none text-gray-900 font-heading">SANY</span>
+              <span className="text-[8px] font-bold tracking-[0.2em] text-gray-500 uppercase font-sans">Central Asia</span>
+            </div>
           </Link>
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />

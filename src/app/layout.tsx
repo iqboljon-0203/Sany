@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     siteName: "SANY Uzbekistan",
     images: [
       {
-        url: "/images/sany_logo_main.png",
+        url: "/logo.svg",
         width: 1200,
         height: 630,
         alt: "SANY Uzbekistan Official Distributor",
@@ -85,12 +85,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SANY Uzbekistan | Официальный Дилер",
     description: "Надежная техника мирового класса для строительства и горнодобычи в Центральной Азии.",
-    images: ["/images/sany_logo_main.png"],
+    images: ["/logo.svg"],
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
   },
 };
 
@@ -141,7 +141,7 @@ export default async function RootLayout({
             "name": "SANY Uzbekistan",
             "alternateName": "SANY AUTOMOBILE MANUFACTURING CENTRAL ASIA",
             "url": "https://sanyasia.uz",
-            "logo": "https://sanyasia.uz/favicon.svg",
+            "logo": "https://sanyasia.uz/logo.svg",
             "contactPoint": {
               "@type": "ContactPoint",
               "telephone": settings?.phone_sales || "+998-91-772-72-73",

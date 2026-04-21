@@ -76,39 +76,11 @@ export default function Navbar({ settings }: { settings?: any }) {
       }`}>
         <div className="container-custom">
           <div className="flex items-center justify-between h-[72px]">
-            <Link href="/" className="flex items-center group">
-              <div className="flex flex-col items-center justify-center transform group-hover:scale-[1.02] transition-transform duration-300">
-                <svg viewBox="0 0 200 50" className="h-10 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Rotor Mark */}
-                  {/* Premium Official Sany Logo Mark */}
-                  <defs>
-                    <linearGradient id="logo-bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#e3000f" />
-                      <stop offset="100%" stopColor="#8d000a" />
-                    </linearGradient>
-                  </defs>
-                  <g>
-                    {/* Background Circle */}
-                    <circle cx="25" cy="25" r="24" fill="url(#logo-bg-grad)" />
-                    <circle cx="25" cy="25" r="21.5" stroke="white" strokeWidth="0.8" fill="none" opacity="0.6" />
-                    
-                    {/* Interlocking "1" Blades */}
-                    <g fill="white" transform="translate(25, 25)">
-                      {[0, 120, 240].map((angle) => (
-                        <path
-                          key={angle}
-                          d="M -2,-13 L 2,-13 L 2,2 L 14,2 L 14,6 L -2,6 Z"
-                          transform={`rotate(${angle}) translate(0, 2)`}
-                        />
-                      ))}
-                      {/* Central Triangle Hole Fix */}
-                      <path d="M 0,-3 L 3,2 L -3,2 Z" fill="url(#logo-bg-grad)" />
-                    </g>
-                  </g>
-                  {/* Typography */}
-                  <text x="60" y="28" fontFamily="'Arial Black', Arial, sans-serif" fontWeight="900" fontSize="24" fill="var(--fg)" letterSpacing="1.5">SANY</text>
-                  <text x="62" y="42" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="9.5" fill="var(--color-text-muted)" letterSpacing="3">CENTRAL ASIA</text>
-                </svg>
+            <Link href="/" className="flex items-center gap-3 group">
+              <img src="/logo.svg" alt="SANY Logo" className="h-14 w-auto" />
+              <div className="flex flex-col">
+                <span className="text-2xl font-black tracking-wider leading-none text-foreground font-heading">SANY</span>
+                <span className="text-[10px] font-bold tracking-[0.3em] text-foreground/50 uppercase font-sans">Central Asia</span>
               </div>
             </Link>
 

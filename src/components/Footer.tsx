@@ -25,33 +25,13 @@ export default function Footer({ settings }: { settings?: any }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <svg viewBox="0 0 200 50" className="h-11 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Premium Official Sany Logo Mark */}
-                <defs>
-                  <linearGradient id="footer-logo-bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#e3000f" />
-                    <stop offset="100%" stopColor="#8d000a" />
-                  </linearGradient>
-                </defs>
-                <g>
-                  {/* Background Circle */}
-                  <circle cx="25" cy="25" r="24" fill="url(#footer-logo-bg-grad)" />
-                  <circle cx="25" cy="25" r="21.5" stroke="white" strokeWidth="0.8" fill="none" opacity="0.6" />
-                  
-                  {/* Interlocking "1" Blades */}
-                  <g fill="white" transform="translate(25, 25)">
-                    <path d="M -2.5,-14 L 2.5,-14 L 2.5,2.5 L 14.5,2.5 L 14.5,6.5 L -2.5,6.5 Z" transform="rotate(0) translate(0, 1.5)" />
-                    <path d="M -2.5,-14 L 2.5,-14 L 2.5,2.5 L 14.5,2.5 L 14.5,6.5 L -2.5,6.5 Z" transform="rotate(120) translate(0, 1.5)" />
-                    <path d="M -2.5,-14 L 2.5,-14 L 2.5,2.5 L 14.5,2.5 L 14.5,6.5 L -2.5,6.5 Z" transform="rotate(240) translate(0, 1.5)" />
-                    {/* Central Triangle Hole Fix */}
-                    <path d="M 0,-3.5 L 4,2.5 L -4,2.5 Z" fill="url(#footer-logo-bg-grad)" />
-                  </g>
-                </g>
-                <text x="60" y="28" fontFamily="'Arial Black', Arial, sans-serif" fontWeight="900" fontSize="24" fill="#ffffff" letterSpacing="1.5">SANY</text>
-                <text x="62" y="42" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="9.5" fill="#a0a0a0" letterSpacing="3">CENTRAL ASIA</text>
-              </svg>
-            </div>
+            <Link href="/" className="flex items-center gap-3 mb-8 group">
+              <img src="/logo.svg" alt="SANY Logo" className="h-16 w-auto" />
+              <div className="flex flex-col">
+                <span className="text-2xl font-black tracking-wider leading-none text-white font-heading">SANY</span>
+                <span className="text-[10px] font-bold tracking-[0.3em] text-white/50 uppercase font-sans">Central Asia</span>
+              </div>
+            </Link>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
                SANY AUTOMOBILE MANUFACTURING CENTRAL ASIA. {t.hero.description.slice(0, 80)}...
             </p>
